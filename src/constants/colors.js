@@ -10,4 +10,5 @@ export const COLOR = {
   blue: '#23036A',
   error: '#CF6679',
   yellow1: '#FF9600',
+  dark_black: '#121212',
 };

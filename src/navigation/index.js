@@ -1,9 +1,9 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {SPACING, DIMENSIONS, COLOR, FONT_SIZE} from '../constants';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Routes} from './routes';
 
 //screens
@@ -15,10 +15,66 @@ import HomeScreen from '../screens/home';
 import ForgotPasswordScreen from '../screens/forgot-password';
 import OtpScreen from '../screens/otp';
 import ResetPasswordScreen from '../screens/reset-password';
+import UploadScreen from '../screens/upload';
+import UserProfileScreen from '../screens/user-profile';
+import PostDetailScreen from '../screens/post-detail';
+import EditProfileScreen from '../screens/edit-profile';
 
 //common files
-import {STYLE} from '../common';
+import {COLOR, FONT_SIZE, SPACING} from '../constants';
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: COLOR.yellow,
+        inactiveTintColor: COLOR.light_grey,
+        activeBackgroundColor: COLOR.black,
+        inactiveBackgroundColor: 'rgba(0,0,0,0.7)',
+        labelStyle: {
+          fontSize: FONT_SIZE.f13,
+          paddingBottom: SPACING.v5,
+        },
+        tabStyle: {
+          height: SPACING.v70,
+          paddingBottom: SPACING.v20,
+        },
+      }}>
+      <Tab.Screen
+        name={Routes.Home}
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({focused, color, style}) => {
+            return <Icon name="home" size={30} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name={Routes.Upload}
+        component={UploadScreen}
+        options={{
+          tabBarLabel: 'Upload',
+          tabBarIcon: ({focused, color, style}) => {
+            return <Icon name="plus-box-multiple" size={25} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name={Routes.UserProfile}
+        component={UserProfileScreen}
+        options={{
+          tabBarLabel: 'User',
+          tabBarIcon: ({focused, color, style}) => {
+            return <Icon name="account-box" size={25} color={color} />;
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 function AppNavigator() {
   return (
@@ -39,6 +95,12 @@ function AppNavigator() {
           <Stack.Screen
             name={Routes.ResetPass}
             component={ResetPasswordScreen}
+          />
+          <Stack.Screen name={Routes.Home} component={MyTabs} />
+          <Stack.Screen name={Routes.PostDetail} component={PostDetailScreen} />
+          <Stack.Screen
+            name={Routes.EditProfile}
+            component={EditProfileScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

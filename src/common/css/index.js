@@ -53,7 +53,7 @@ export const STYLE = StyleSheet.create({
   button_text: {
     fontSize: FONT_SIZE.f15,
     color: COLOR.white,
-    fontFamily: FONTS.montserratBold,
+    fontFamily: FONTS.montSemiBold,
     letterSpacing: 1,
   },
   x_small_white: {
@@ -85,7 +85,7 @@ export const STYLE = StyleSheet.create({
     fontSize: FONT_SIZE.f25,
     color: COLOR.white,
     marginTop: SPACING.v10,
-    fontFamily: FONTS.montserratBold,
+    fontFamily: FONTS.montSemiBold,
   },
   large_black: {
     fontSize: FONT_SIZE.f22,
@@ -103,6 +103,7 @@ export const STYLE = StyleSheet.create({
   medium_black: {
     fontSize: FONT_SIZE.f18,
     color: COLOR.black,
+    fontFamily: FONTS.montSemiBold,
   },
   align_row: {
     flexDirection: 'row',
@@ -233,11 +234,28 @@ export const STYLE = StyleSheet.create({
     fontFamily: FONTS.montLight,
   },
   white_16: {
-    fontSize: FONT_SIZE.f16, color: COLOR.white, fontFamily: FONTS.montRegular
+    fontSize: FONT_SIZE.f16,
+    color: COLOR.white,
+    fontFamily: FONTS.montRegular,
   },
   space_wrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: SPACING.v20,
+  },
+  white_12: {
+    fontSize: FONT_SIZE.f12,
+    color: COLOR.white,
+    fontFamily: FONTS.montLight,
+  },
+  black_12: {
+    fontSize: FONT_SIZE.f12,
+    color: COLOR.black,
+    fontFamily: FONTS.montLight,
+  },
+  detail_image: {
+    height: DIMENSIONS.WINDOW_HEIGHT / 3,
+    width: '100%',
+    resizeMode: 'cover',
   },
 });

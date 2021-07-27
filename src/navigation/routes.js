@@ -7,4 +7,8 @@ export const Routes = {
   ForgotPassword: 'ForgotPassword',
   Otp: 'Otp',
   ResetPass: 'ResetPass',
+  Upload: 'Upload',
+  UserProfile: 'UserProfile',
+  PostDetail: 'PostDetail',
+  EditProfile: 'EditProfile',
 };

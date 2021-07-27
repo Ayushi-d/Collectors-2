@@ -8,7 +8,6 @@ import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 
 function ResetPasswordScreen({navigation}) {
-  let inputs = {};
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   return (

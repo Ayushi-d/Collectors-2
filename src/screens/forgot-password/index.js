@@ -27,7 +27,7 @@ function ForgotPasswordScreen({navigation}) {
         </View>
         <View style={{marginTop: SPACING.v50}}>
           <Text style={STYLE.x_small_white}>
-            Enter your email and we’ll send you a link to get back into your
+            Enter your email and we’ll send you an OTP to get back into your
             account
           </Text>
           <InputText label={'Email'} value={email} onChange={setEmail} />

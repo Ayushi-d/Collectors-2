@@ -50,7 +50,9 @@ function RegisterScreen({navigation}) {
           />
           <View style={STYLE.justify_center}>
             <LoginButton
-              onPress={() => navigateTo(navigation, Routes.Otp)}
+              onPress={() =>
+                navigateTo(navigation, Routes.Otp, {screen: 'signup'})
+              }
               title={'Create account'.toUpperCase()}
               style={{marginTop: SPACING.v40}}
             />

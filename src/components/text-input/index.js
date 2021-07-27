@@ -14,7 +14,7 @@ export function InputText(props) {
         onChangeText={onChange}
         style={{
           fontSize: FONT_SIZE.f16,
-            fontFamily: FONTS.montThin,
+          fontFamily: FONTS.montThin,
         }}
         selectionColor={COLOR.white}
         underlineColor={COLOR.blue}

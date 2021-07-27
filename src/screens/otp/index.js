@@ -4,10 +4,10 @@ import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
 import {SPACING} from '../../constants';
 import {OtpInput} from '../../components';
-import {navigateTo} from "../../helpers";
-import {Routes} from "../../navigation/routes";
+import {navigateTo} from '../../helpers';
+import {Routes} from '../../navigation/routes';
 
-function OtpScreen({navigation}) {
+function OtpScreen({navigation, route}) {
   let inputs = {};
   const [number1, setNumber1] = useState('');
   const [number2, setNumber2] = useState('');
@@ -18,6 +18,14 @@ function OtpScreen({navigation}) {
   function focusNextField(id) {
     if (id in inputs) {
       inputs[id].focus();
+    }
+  }
+
+  function pressNext() {
+    if (route.params.screen === 'signup') {
+      navigateTo(navigation, Routes.Home);
+    } else {
+      navigateTo(navigation, Routes.ResetPass);
     }
   }
   return (
@@ -92,7 +100,7 @@ function OtpScreen({navigation}) {
             <Text style={STYLE.white_14}>Resend OTP</Text>
           </TouchableItem>
           <LoginButton
-            onPress={() => navigateTo(navigation, Routes.ResetPass)}
+            onPress={pressNext}
             title={'Submit'}
             style={{marginTop: SPACING.v50}}
           />

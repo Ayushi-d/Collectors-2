@@ -19,14 +19,14 @@ export const SPLASH_STYLE = StyleSheet.create({
     fontSize: FONT_SIZE.f36,
     color: COLOR.white,
     textAlign: 'center',
-    fontFamily: FONTS.montserratBold,
+    fontFamily: FONTS.montSemiBold,
     letterSpacing: 3,
   },
   edition_text: {
     fontSize: FONT_SIZE.f18,
     marginLeft: DIMENSIONS.WINDOW_WIDTH / 2,
     color: COLOR.yellow,
-    fontFamily: FONTS.montserratBold,
+    fontFamily: FONTS.montSemiBold,
     letterSpacing: 3,
   },
 });

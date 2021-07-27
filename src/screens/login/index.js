@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Image, KeyboardAvoidingView, Platform, Text, View} from 'react-native';
 import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
-import {COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
+import {SPACING} from '../../constants';
 import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
@@ -44,7 +44,11 @@ function LoginScreen({navigation}) {
               onPress={() => navigateTo(navigation, Routes.ForgotPassword)}>
               <Text style={STYLE.forgot_pass}>Forgot Password?</Text>
             </TouchableItem>
-            <LoginButton title={'LOG IN'} style={{marginTop: SPACING.v40}} />
+            <LoginButton
+              onPress={() => navigateTo(navigation, Routes.Home)}
+              title={'LOG IN'}
+              style={{marginTop: SPACING.v40}}
+            />
           </View>
         </View>
       </KeyboardAvoidingView>

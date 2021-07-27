@@ -23,7 +23,7 @@ export const GET_STARTED_STYLE = StyleSheet.create({
   text: {
     fontSize: FONT_SIZE.f30,
     color: COLOR.white,
-    fontFamily: FONTS.montserratBold,
+    fontFamily: FONTS.montSemiBold,
     letterSpacing: 1,
   },
   sub_heading: {

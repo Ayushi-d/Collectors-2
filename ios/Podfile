@@ -12,6 +12,8 @@ target 'Collectors_Edition' do
     :hermes_enabled => false
   )
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'Collectors_EditionTests' do
     inherit! :complete
     # Pods for testing

@@ -19,12 +19,12 @@ function GetStartedScreen({navigation}) {
           source={require('../../assets/png/app-logo.png')}
           style={GET_STARTED_STYLE.app_logo}
         />
-        <Text style={[GET_STARTED_STYLE.text]}>
+        <Text style={GET_STARTED_STYLE.text}>
           Welcome to Collectors Edition
         </Text>
         <Text style={[GET_STARTED_STYLE.sub_heading, {marginTop: SPACING.v10}]}>
-          Join our community of collectors around the world. Showcase, buy, cell
-          and exchange collectibles.
+          Join our community of collectors, around the world. Showcase, buy,
+          sell and exchange collectibles.
         </Text>
         <LoginButton
           onPress={() => navigateTo(navigation, Routes.Register, {}, true)}
