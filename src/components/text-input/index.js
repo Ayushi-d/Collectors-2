@@ -5,8 +5,9 @@ import {COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
 
 export function InputText(props) {
   const onChange = React.useCallback(text => props.onChange(text), [props]);
+  const {marginTop = SPACING.v30} = props;
   return (
-    <View style={{marginTop: SPACING.v30}}>
+    <View style={{marginTop: marginTop}}>
       <TextInput
         label={props.label}
         value={props.value}

@@ -15,10 +15,9 @@ export const GET_STARTED_STYLE = StyleSheet.create({
     flex: 1,
   },
   app_logo: {
-    width: DIMENSIONS.WINDOW_WIDTH,
+    width: DIMENSIONS.WINDOW_WIDTH / 1.2,
     height: HEIGHT.h120,
     resizeMode: 'contain',
-    marginLeft: SPACING.v20,
   },
   text: {
     fontSize: FONT_SIZE.f30,

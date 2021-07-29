@@ -18,6 +18,6 @@ export const HEADER_STYLE = StyleSheet.create({
     height: SPACING.v30,
     width: SPACING.v30,
     resizeMode: 'contain',
-    borderRadius: SPACING.v15,
+    borderRadius: SPACING.v20,
   },
 });

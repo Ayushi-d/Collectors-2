@@ -35,6 +35,10 @@ function PostDetailScreen({navigation}) {
             source={require('../../assets/png/user.png')}
             style={STYLE.detail_image}
           />
+          <Text style={[STYLE.x_small_white, {marginTop: SPACING.v20}]}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.{' '}
+          </Text>
         </View>
       </ScrollView>
     </ScreenContainer>

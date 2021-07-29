@@ -9,7 +9,7 @@ export function NavigationHeader(props) {
   return (
     <View style={HEADER_STYLE.container}>
       <Image
-        source={require('../../assets/png/app-logo.png')}
+        source={require('../../assets/png/user.png')}
         style={HEADER_STYLE.user_image}
       />
       <Text style={[STYLE.white_14, {fontFamily: FONTS.montSemiBold}]}>

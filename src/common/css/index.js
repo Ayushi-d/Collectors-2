@@ -19,7 +19,7 @@ export const STYLE = StyleSheet.create({
     paddingTop: SPACING.v20,
   },
   app_logo: {
-    width: DIMENSIONS.WINDOW_WIDTH,
+    width: DIMENSIONS.WINDOW_WIDTH / 1.2,
     height: DIMENSIONS.WINDOW_HEIGHT / 7,
     marginTop: SPACING.v25,
     resizeMode: 'contain',
@@ -214,8 +214,9 @@ export const STYLE = StyleSheet.create({
     paddingHorizontal: SPACING.v10,
   },
   logo_app: {
-    height: SPACING.v80,
-    width: SPACING.v80,
+    height: SPACING.v70,
+    width: SPACING.v70,
+    marginRight: SPACING.v20,
     resizeMode: 'contain',
   },
   terms: {
@@ -257,5 +258,9 @@ export const STYLE = StyleSheet.create({
     height: DIMENSIONS.WINDOW_HEIGHT / 3,
     width: '100%',
     resizeMode: 'cover',
+  },
+  background: {
+    flex: 1,
+    backgroundColor: 'rgba(41,41,41,1.2)',
   },
 });

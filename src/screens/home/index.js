@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {View, ScrollView, Text, Image} from 'react-native';
+import {View, ScrollView, Text, Image, FlatList} from 'react-native';
 import {ScreenContainer, TouchableItem} from '../../elements';
-import {STYLE, AssetSmallButton} from '../../common';
+import {STYLE} from '../../common';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
@@ -28,11 +29,27 @@ function HomeScreen({navigation}) {
 
   function renderCarouselItem({item, index}) {
     return (
-      <View style={[STYLE.justify_center, {width: '100%'}]} key={index}>
+      <TouchableItem
+        onPress={() => navigateTo(navigation, Routes.PostDetail)}
+        style={[STYLE.justify_center, {width: '100%'}]}
+        key={index}>
         <Image source={item.img} style={HOME_STYLE.user_image} />
-      </View>
+      </TouchableItem>
     );
   }
+
+  const DATA = [
+    {
+      name: 'Isabel bates',
+      content:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    },
+    {
+      name: 'John Abrahum',
+      content:
+        'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. ',
+    },
+  ];
 
   function slideActive(index) {
     setActiveSlide(index);
@@ -49,7 +66,7 @@ function HomeScreen({navigation}) {
           height: 10,
           borderRadius: 5,
         }}
-        dotColor={COLOR.blue}
+        dotColor={COLOR.yellow1}
         inactiveDotColor={COLOR.white}
         inactiveDotStyle={{
           width: 10,
@@ -63,81 +80,86 @@ function HomeScreen({navigation}) {
     );
   }
 
+  function renderItem({item}) {
+    return (
+      <View style={HOME_STYLE.black_background}>
+        <View style={HOME_STYLE.inside_content}>
+          <View style={HOME_STYLE.user_inside}>
+            <Image
+              source={require('../../assets/png/user.png')}
+              style={HOME_STYLE.image}
+            />
+          </View>
+          <View>
+            <Text style={[STYLE.white_12, {fontFamily: FONTS.montMedium}]}>
+              {item.name}
+            </Text>
+            <Text style={[STYLE.white_12, {fontFamily: FONTS.montMedium}]}>
+              Item for sale
+            </Text>
+          </View>
+          {/*<Text style={[STYLE.white_16, {marginLeft:'auto'}]}>$12</Text>*/}
+        </View>
+        <Carousel
+          data={CarouselData}
+          renderItem={renderCarouselItem}
+          sliderWidth={DIMENSIONS.WINDOW_WIDTH}
+          sliderHeight={DIMENSIONS.WINDOW_HEIGHT}
+          itemWidth={DIMENSIONS.WINDOW_WIDTH}
+          hasParallaxImages={false}
+          inactiveSlideOpacity={0.4}
+          inactiveSlideScale={6}
+          enableMomentum={true}
+          firstItem={0}
+          contentContainerCustomStyle={{alignItems: 'center'}}
+          onSnapToItem={slideActive}
+        />
+        {pagination()}
+        <Text
+          style={[
+            STYLE.white_12,
+            {paddingHorizontal: SPACING.v20, paddingBottom: SPACING.v5},
+          ]}>
+          {item.content}
+        </Text>
+        <View style={HOME_STYLE.share_icons}>
+          <TouchableItem>
+            <Icon name={'thumb-up-outline'} color={COLOR.white} size={30} />
+          </TouchableItem>
+          <TouchableItem style={{marginHorizontal: SPACING.v20}}>
+            <Icon name={'comment-outline'} color={COLOR.white} size={30} />
+          </TouchableItem>
+          <TouchableItem>
+            <Icon name={'share'} color={COLOR.white} size={30} />
+          </TouchableItem>
+        </View>
+        {/*<Text*/}
+        {/*  style={[*/}
+        {/*    STYLE.white_14,*/}
+        {/*    {*/}
+        {/*      marginLeft: 'auto',*/}
+        {/*      color: COLOR.yellow1,*/}
+        {/*      padding: SPACING.v15,*/}
+        {/*    },*/}
+        {/*  ]}*/}
+        {/*/>*/}
+      </View>
+    );
+  }
+
   return (
     <ScreenContainer>
       {/*<View style={STYLE.flex_white}>*/}
       <NavigationHeader navigation={navigation} />
-      <View style={{flex: 1, backgroundColor: COLOR.white}}>
+      <View style={STYLE.background}>
         <ScrollView
           contentContainerStyle={[
             STYLE.padding_wrapper,
             {paddingBottom: SPACING.v20},
           ]}>
-          <Text style={STYLE.medium_black}>Funkos Collection</Text>
-          <Text style={STYLE.black_12}>Popular Funkos</Text>
-          <View
-            style={{
-              height: DIMENSIONS.WINDOW_HEIGHT / 1.7,
-              backgroundColor: COLOR.black,
-              borderWidth: 1,
-              borderColor: COLOR.white,
-              marginTop: SPACING.v15,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: SPACING.v15,
-                paddingTop: SPACING.v10,
-              }}>
-              <Image
-                source={require('../../assets/png/app-logo.png')}
-                style={{height: 40, width: 40, resizeMode: 'contain'}}
-              />
-              <View>
-                <Text style={[STYLE.white_12, {fontFamily: FONTS.montMedium}]}>
-                  {'Isabel bates'}
-                </Text>
-                <Text style={[STYLE.white_12, {fontFamily: FONTS.montMedium}]}>
-                  Item for sale
-                </Text>
-              </View>
-              {/*<Text style={[STYLE.white_16, {marginLeft:'auto'}]}>$12</Text>*/}
-            </View>
-            <Carousel
-              data={CarouselData}
-              renderItem={renderCarouselItem}
-              sliderWidth={DIMENSIONS.WINDOW_WIDTH}
-              sliderHeight={DIMENSIONS.WINDOW_HEIGHT}
-              itemWidth={DIMENSIONS.WINDOW_WIDTH}
-              hasParallaxImages={false}
-              inactiveSlideOpacity={0.4}
-              inactiveSlideScale={6}
-              enableMomentum={true}
-              firstItem={0}
-              contentContainerCustomStyle={{alignItems: 'center'}}
-              onSnapToItem={slideActive}
-            />
-            {pagination()}
-            <Text
-              style={[
-                STYLE.white_12,
-                {paddingHorizontal: SPACING.v20, paddingBottom: SPACING.v5},
-              ]}>
-              lorem ipsum dummy content inside simply dumjmy text of tysetting
-              idustry
-            </Text>
-            <Text
-              style={[
-                STYLE.white_14,
-                {
-                  marginLeft: 'auto',
-                  color: COLOR.yellow1,
-                  padding: SPACING.v15,
-                },
-              ]}
-            />
-          </View>
+          <Text style={STYLE.medium_white}>Funkos Collection</Text>
+          <Text style={STYLE.white_12}>Popular Funkos</Text>
+          <FlatList data={DATA} renderItem={renderItem} />
         </ScrollView>
       </View>
 

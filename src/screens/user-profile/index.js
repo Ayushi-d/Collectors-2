@@ -28,46 +28,60 @@ function UserProfileScreen({navigation}) {
   return (
     <ScreenContainer>
       <NavigationHeader navigation={navigation} />
-      <ScrollView contentContainerStyle={{paddingBottom: SPACING.v20}}>
-        <View style={STYLE.padding_wrapper}>
-          <View style={[STYLE.align_row, {paddingBottom: SPACING.v10}]}>
-            <Image
-              source={require('../../assets/png/user.png')}
-              style={PROFILE_STYLE.user_image}
+      <View style={STYLE.background}>
+        <ScrollView contentContainerStyle={{paddingBottom: SPACING.v20}}>
+          <View style={STYLE.padding_wrapper}>
+            <View style={[STYLE.align_row, {paddingBottom: SPACING.v10}]}>
+              <Image
+                source={require('../../assets/png/user.png')}
+                style={PROFILE_STYLE.user_image}
+              />
+              <Text
+                style={[
+                  STYLE.large_white,
+                  {paddingLeft: SPACING.v15, marginTop: 0},
+                ]}>
+                Ammy Jackson
+              </Text>
+            </View>
+            <View style={STYLE.align_row}>
+              <View>
+                <Text style={STYLE.white_12}>Lorem ipsum data</Text>
+                <Text style={STYLE.white_12}>User Bio</Text>
+                <Text style={STYLE.white_12}>Dummy data</Text>
+              </View>
+              <View style={[STYLE.margin_auto, {flexDirection: 'row'}]}>
+                <View>
+                  <Text style={[STYLE.white_16, {textAlign: 'center'}]}>6</Text>
+                  <Text style={STYLE.white_12}>Posts</Text>
+                </View>
+                <View style={{marginHorizontal: SPACING.v15}}>
+                  <Text style={[STYLE.white_16, {textAlign: 'center'}]}>6</Text>
+                  <Text style={STYLE.white_12}>followers</Text>
+                </View>
+                <View>
+                  <Text style={[STYLE.white_16, {textAlign: 'center'}]}>
+                    12
+                  </Text>
+                  <Text style={STYLE.white_12}>following</Text>
+                </View>
+              </View>
+            </View>
+            <LoginButton
+              onPress={() => navigateTo(navigation, Routes.EditProfile)}
+              title={'Edit Profile'}
+              style={{marginTop: SPACING.v15}}
             />
-            <Text
-              style={[
-                STYLE.large_white,
-                {paddingLeft: SPACING.v15, marginTop: 0},
-              ]}>
-              Ammy Jackson
-            </Text>
           </View>
-          <View style={STYLE.align_row}>
-            <View>
-              <Text style={STYLE.white_12}>Lorem ipsum data</Text>
-              <Text style={STYLE.white_12}>User Bio</Text>
-              <Text style={STYLE.white_12}>Dummy data</Text>
-            </View>
-            <View style={STYLE.margin_auto}>
-              <Text style={[STYLE.white_16, {textAlign: 'center'}]}>6</Text>
-              <Text style={STYLE.white_12}>Posts</Text>
-            </View>
-          </View>
-          <LoginButton
-            onPress={() => navigateTo(navigation, Routes.EditProfile)}
-            title={'Edit Profile'}
-            style={{marginTop: SPACING.v15}}
+          <View style={PROFILE_STYLE.border} />
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            numColumns={3}
+            keyExtractor={(item, index) => `${item.id}`}
           />
-        </View>
-        <View style={PROFILE_STYLE.border} />
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          numColumns={3}
-          keyExtractor={(item, index) => `${item.id}`}
-        />
-      </ScrollView>
+        </ScrollView>
+      </View>
     </ScreenContainer>
   );
 }

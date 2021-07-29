@@ -57,7 +57,8 @@ function RegisterScreen({navigation}) {
               style={{marginTop: SPACING.v40}}
             />
             <Text style={STYLE.terms}>
-              By Signing in you agree to the terms of service
+              By Signing in you agree to the{' '}
+              <Text style={{color: COLOR.primary}}>terms of service</Text>
             </Text>
           </View>
         </View>
