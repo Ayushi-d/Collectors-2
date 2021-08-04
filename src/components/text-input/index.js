@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
 
 export function InputText(props) {
   const onChange = React.useCallback(text => props.onChange(text), [props]);
-  const {marginTop = SPACING.v30} = props;
+  const {marginTop = SPACING.v30, height} = props;
   return (
     <View style={{marginTop: marginTop}}>
       <TextInput
@@ -13,12 +13,10 @@ export function InputText(props) {
         value={props.value}
         mode="outlined"
         onChangeText={onChange}
-        style={{
-          fontSize: FONT_SIZE.f16,
-          fontFamily: FONTS.montThin,
-        }}
+        style={[styles.text_input, {height}]}
         selectionColor={COLOR.white}
         underlineColor={COLOR.blue}
+        secureTextEntry={props.secureTextEntry}
         theme={{
           colors: {
             placeholder: COLOR.white,
@@ -33,3 +31,10 @@ export function InputText(props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  text_input: {
+    fontSize: FONT_SIZE.f16,
+    fontFamily: FONTS.montThin,
+  },
+});

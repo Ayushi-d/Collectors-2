@@ -11,16 +11,17 @@ import {
 export const GET_STARTED_STYLE = StyleSheet.create({
   justify_center: {
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     flex: 1,
   },
   app_logo: {
-    width: DIMENSIONS.WINDOW_WIDTH / 1.2,
-    height: HEIGHT.h120,
+    width: DIMENSIONS.WINDOW_WIDTH / 1.3,
+    height: HEIGHT.h100,
+    marginBottom: SPACING.v10,
     resizeMode: 'contain',
   },
   text: {
-    fontSize: FONT_SIZE.f30,
+    fontSize: FONT_SIZE.f25,
     color: COLOR.white,
     fontFamily: FONTS.montSemiBold,
     letterSpacing: 1,

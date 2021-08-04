@@ -129,20 +129,10 @@ function HomeScreen({navigation}) {
           <TouchableItem style={{marginHorizontal: SPACING.v20}}>
             <Icon name={'comment-outline'} color={COLOR.white} size={30} />
           </TouchableItem>
-          <TouchableItem>
+          <TouchableItem style={STYLE.margin_auto}>
             <Icon name={'share'} color={COLOR.white} size={30} />
           </TouchableItem>
         </View>
-        {/*<Text*/}
-        {/*  style={[*/}
-        {/*    STYLE.white_14,*/}
-        {/*    {*/}
-        {/*      marginLeft: 'auto',*/}
-        {/*      color: COLOR.yellow1,*/}
-        {/*      padding: SPACING.v15,*/}
-        {/*    },*/}
-        {/*  ]}*/}
-        {/*/>*/}
       </View>
     );
   }
@@ -157,8 +147,8 @@ function HomeScreen({navigation}) {
             STYLE.padding_wrapper,
             {paddingBottom: SPACING.v20},
           ]}>
-          <Text style={STYLE.medium_white}>Funkos Collection</Text>
-          <Text style={STYLE.white_12}>Popular Funkos</Text>
+          {/*<Text style={STYLE.medium_white}>Funkos Collection</Text>*/}
+          {/*<Text style={STYLE.white_12}>Popular Funkos</Text>*/}
           <FlatList data={DATA} renderItem={renderItem} />
         </ScrollView>
       </View>

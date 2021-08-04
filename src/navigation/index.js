@@ -21,7 +21,7 @@ import PostDetailScreen from '../screens/post-detail';
 import EditProfileScreen from '../screens/edit-profile';
 
 //common files
-import {COLOR, FONT_SIZE, SPACING} from '../constants';
+import {COLOR, FONT_SIZE, NAVIGATION_REF, SPACING} from '../constants';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +31,8 @@ function MyTabs() {
       tabBarOptions={{
         activeTintColor: COLOR.yellow,
         inactiveTintColor: COLOR.light_grey,
-        activeBackgroundColor: COLOR.black,
+        activeBackgroundColor: 'rgba(0,0,0,0.7)',
+        // inactiveBackgroundColor: 'rgba(0,0,0,0.7)',
         inactiveBackgroundColor: 'rgba(0,0,0,0.7)',
         labelStyle: {
           fontSize: FONT_SIZE.f13,
@@ -46,7 +47,7 @@ function MyTabs() {
         name={Routes.Home}
         component={HomeScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'CE',
           tabBarIcon: ({focused, color, style}) => {
             return <Icon name="home" size={30} color={color} />;
           },
@@ -79,7 +80,7 @@ function MyTabs() {
 function AppNavigator() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
+      <NavigationContainer ref={NAVIGATION_REF}>
         <Stack.Navigator
           initialRouteName={Routes.Splash}
           screenOptions={{headerShown: false}}>

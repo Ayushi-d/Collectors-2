@@ -8,10 +8,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export function NavigationHeader(props) {
   return (
     <View style={HEADER_STYLE.container}>
-      <Image
-        source={require('../../assets/png/user.png')}
-        style={HEADER_STYLE.user_image}
-      />
+      {/*<Image*/}
+      {/*  source={require('../../assets/png/user.png')}*/}
+      {/*  style={HEADER_STYLE.user_image}*/}
+      {/*/>*/}
       <Text style={[STYLE.white_14, {fontFamily: FONTS.montSemiBold}]}>
         {'Collectors Edition'.toUpperCase()}
       </Text>

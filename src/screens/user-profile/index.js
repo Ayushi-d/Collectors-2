@@ -1,15 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, ScrollView, Text, Image, FlatList} from 'react-native';
 import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
-import {SPACING} from '../../constants';
+import {ACCESS_TOKEN, SPACING} from '../../constants';
 import {NavigationHeader} from '../../components';
 import {PROFILE_STYLE} from './style';
+import {connect, useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getUserProfile} from '../../actions';
 
-function UserProfileScreen({navigation}) {
+function UserProfileScreen({navigation, user}) {
+  const dispatch = useDispatch();
   const DATA = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}];
+
+  useEffect(() => {
+    (async function f() {
+      const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+      await dispatch(getUserProfile(token));
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log('user is', user);
+  }, [user]);
 
   function renderItem({item, index}) {
     return (
@@ -41,12 +56,12 @@ function UserProfileScreen({navigation}) {
                   STYLE.large_white,
                   {paddingLeft: SPACING.v15, marginTop: 0},
                 ]}>
-                Ammy Jackson
+                {user ? user.name : 'Ammy'}
               </Text>
             </View>
             <View style={STYLE.align_row}>
               <View>
-                <Text style={STYLE.white_12}>Lorem ipsum data</Text>
+                <Text style={STYLE.white_12}>{user ? user.email : 'lorem email'}</Text>
                 <Text style={STYLE.white_12}>User Bio</Text>
                 <Text style={STYLE.white_12}>Dummy data</Text>
               </View>
@@ -86,4 +101,11 @@ function UserProfileScreen({navigation}) {
   );
 }
 
-export default UserProfileScreen;
+export function mapStateToProps(state) {
+  console.log('state is', state);
+  return {
+    user: state.userProfile.user,
+  };
+}
+
+export default connect(mapStateToProps, {getUserProfile})(UserProfileScreen);

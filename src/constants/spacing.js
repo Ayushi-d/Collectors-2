@@ -1,3 +1,4 @@
+import React from 'react';
 import {Dimensions, Platform} from 'react-native';
 
 export const DIMENSIONS = {
@@ -84,3 +85,8 @@ export const HEIGHT = {
   h200: DIMENSIONS.WINDOW_HEIGHT / 3.2,
   h230: DIMENSIONS.WINDOW_HEIGHT / 2.7,
 };
+
+export const BASE_URL = 'http://3.15.188.149:9500/api/v1';
+export const ACCESS_TOKEN = 'token';
+export const APP_REFRESH_TOKEN = 'refresh';
+export const NAVIGATION_REF = React.createRef();

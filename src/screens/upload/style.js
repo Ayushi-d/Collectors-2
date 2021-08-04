@@ -18,6 +18,7 @@ export const UPLOAD_STYLE = StyleSheet.create({
   },
   dropdown: {
     backgroundColor: COLOR.black,
+    height: SPACING.v50,
   },
   image: {
     width: '100%',

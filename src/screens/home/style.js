@@ -19,6 +19,7 @@ export const HOME_STYLE = StyleSheet.create({
     marginRight: SPACING.v40,
     resizeMode: 'cover',
     marginBottom: SPACING.v30,
+    borderRadius: SPACING.v10,
   },
   black_background: {
     height: DIMENSIONS.WINDOW_HEIGHT / 1.7,
@@ -48,6 +49,7 @@ export const HOME_STYLE = StyleSheet.create({
     resizeMode: 'cover',
   },
   share_icons: {
-    flexDirection: 'row', marginLeft: 'auto', margin: SPACING.v10
+    flexDirection: 'row', margin: SPACING.v10,
+    paddingHorizontal: SPACING.v10,
   }
 });

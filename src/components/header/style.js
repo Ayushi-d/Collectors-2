@@ -4,9 +4,7 @@ import {COLOR, FONT_SIZE, SPACING} from '../../constants';
 export const HEADER_STYLE = StyleSheet.create({
   container: {
     height: SPACING.v60,
-    borderBottomWidth: 1,
     paddingBottom: SPACING.v10,
-    borderBottomColor: COLOR.white,
     backgroundColor: COLOR.black,
     flexDirection: 'row',
     paddingTop: SPACING.v20,

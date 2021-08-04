@@ -21,4 +21,8 @@ export const SPLASH_STYLE = StyleSheet.create({
     fontFamily: FONTS.montSemiBold,
     letterSpacing: 3,
   },
+  image_background: {
+    width: '100%',
+    height: DIMENSIONS.WINDOW_HEIGHT,
+  },
 });
