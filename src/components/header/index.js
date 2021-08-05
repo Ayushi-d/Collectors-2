@@ -4,6 +4,7 @@ import {COLOR, FONTS, SPACING} from '../../constants';
 import {HEADER_STYLE} from './style';
 import {STYLE} from '../../common';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {SPLASH_STYLE} from "../../screens/splash/style";
 
 export function NavigationHeader(props) {
   return (
@@ -12,9 +13,13 @@ export function NavigationHeader(props) {
       {/*  source={require('../../assets/png/user.png')}*/}
       {/*  style={HEADER_STYLE.user_image}*/}
       {/*/>*/}
-      <Text style={[STYLE.white_14, {fontFamily: FONTS.montSemiBold}]}>
-        {'Collectors Edition'.toUpperCase()}
-      </Text>
+        <Image
+            source={require('../../assets/jpg/collector_2.png')}
+            style={HEADER_STYLE.logo}
+        />
+      {/*<Text style={[STYLE.white_14, {fontFamily: FONTS.montSemiBold}]}>*/}
+      {/*  {'Collectors Edition'.toUpperCase()}*/}
+      {/*</Text>*/}
       <Icon name={'magnify'} color={COLOR.white} size={25} />
     </View>
   );

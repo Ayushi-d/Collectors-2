@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, View, Text} from 'react-native';
-import {ScreenContainer, TouchableItem} from '../../elements';
+import {Image, View, Text, ImageBackground} from 'react-native';
+import {TouchableItem} from '../../elements';
 import {GET_STARTED_STYLE} from './style';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
@@ -9,7 +9,9 @@ import {LoginButton, STYLE} from '../../common';
 
 function GetStartedScreen({navigation}) {
   return (
-    <ScreenContainer>
+    <ImageBackground
+      source={require('../../assets/jpg/whatsup_background.jpeg')}
+      style={STYLE.image_background}>
       <View
         style={[
           GET_STARTED_STYLE.justify_center,
@@ -37,7 +39,7 @@ function GetStartedScreen({navigation}) {
           <Text style={STYLE.button_text}>LOG IN</Text>
         </TouchableItem>
       </View>
-    </ScreenContainer>
+    </ImageBackground>
   );
 }
 

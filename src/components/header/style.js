@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {COLOR, FONT_SIZE, SPACING} from '../../constants';
+import {COLOR, DIMENSIONS, FONT_SIZE, HEIGHT, SPACING, WIDTH} from '../../constants';
 
 export const HEADER_STYLE = StyleSheet.create({
   container: {
@@ -18,4 +18,9 @@ export const HEADER_STYLE = StyleSheet.create({
     resizeMode: 'contain',
     borderRadius: SPACING.v20,
   },
+  logo: {
+    height: HEIGHT.h100,
+    width: DIMENSIONS.WINDOW_WIDTH / 2,
+    resizeMode: 'contain',
+  }
 });

@@ -20,8 +20,8 @@ export const STYLE = StyleSheet.create({
   },
   app_logo: {
     width: DIMENSIONS.WINDOW_WIDTH / 1.2,
-    height: DIMENSIONS.WINDOW_HEIGHT / 7,
-    marginTop: SPACING.v25,
+    height: SPACING.v70,
+    marginTop: SPACING.v60,
     resizeMode: 'contain',
   },
   classified_logo: {
@@ -44,7 +44,7 @@ export const STYLE = StyleSheet.create({
   },
   login_button: {
     height: SPACING.v60,
-    width: '100%',
+    width: '85%',
     borderWidth: 2,
     borderColor: COLOR.light_grey,
     borderRadius: SPACING.v30,
@@ -231,7 +231,7 @@ export const STYLE = StyleSheet.create({
     color: COLOR.white,
     textAlign: 'center',
     fontSize: FONT_SIZE.f14,
-    marginTop: SPACING.v35,
+    // marginTop: SPACING.v35,
   },
   forgot_pass: {
     color: COLOR.yellow1,
@@ -257,6 +257,11 @@ export const STYLE = StyleSheet.create({
     color: COLOR.white,
     fontFamily: FONTS.montLight,
   },
+  white_10: {
+    fontSize: FONT_SIZE.f10,
+    color: COLOR.white,
+    fontFamily: FONTS.montLight,
+  },
   black_12: {
     fontSize: FONT_SIZE.f12,
     color: COLOR.black,
@@ -270,5 +275,20 @@ export const STYLE = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: 'rgba(41,41,41,1.2)',
+  },
+  image_background: {
+    width: '100%',
+    height: DIMENSIONS.WINDOW_HEIGHT,
+  },
+  resend: {
+    marginLeft: 'auto',
+    marginTop: SPACING.v10,
+    borderBottomWidth: 1,
+    borderColor: COLOR.white,
+  },
+  button_top_margin: {
+    marginTop: SPACING.v50,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
 });

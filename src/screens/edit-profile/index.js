@@ -34,9 +34,9 @@ function EditProfileScreen({navigation, user}) {
     await AsyncStorage.removeItem(ACCESS_TOKEN);
     navigateTo(navigation, Routes.Login, {}, true);
   }
-  
+
   async function editUserProfile() {
-    
+
   }
   return (
     <ScreenContainer>
@@ -49,12 +49,12 @@ function EditProfileScreen({navigation, user}) {
           <InputText label={'Bio'} value={bio} onChange={setBio} />
           <LoginButton
             title={'Save'}
-            style={{marginTop: SPACING.v40}}
+            style={STYLE.button_top_margin}
             onPress={() => navigateTo(navigation, Routes.UserProfile)}
           />
           <LoginButton
             title={'Logout'}
-            style={{marginTop: SPACING.v20}}
+            style={[STYLE.button_top_margin, {marginTop: SPACING.v20}]}
             onPress={logoutUser}
           />
         </View>
@@ -64,7 +64,6 @@ function EditProfileScreen({navigation, user}) {
 }
 
 export function mapStateToProps(state) {
-  console.log('state is', state);
   return {
     user: state.userProfile.user,
   };

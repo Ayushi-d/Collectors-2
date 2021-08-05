@@ -4,17 +4,17 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
+  ImageBackground,
   Text,
 } from 'react-native';
-import {ScreenContainer} from '../../elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STYLE, LoginButton} from '../../common';
-import {ACCESS_TOKEN, APP_REFRESH_TOKEN, COLOR, FONT_SIZE, SPACING} from '../../constants';
+import {ACCESS_TOKEN, APP_REFRESH_TOKEN, SPACING} from '../../constants';
 import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 import {registerUser} from '../../actions';
+import {REGISTER_STYLE} from './style';
 
 function RegisterScreen({navigation}) {
   let inputs = {};
@@ -44,7 +44,6 @@ function RegisterScreen({navigation}) {
       registerUser(name, email, password, 'APP_USER')
         .then(response => {
           setLoading(false);
-          console.log('response here is', response);
           if (response.success) {
             AsyncStorage.setItem(ACCESS_TOKEN, response.data.token);
             AsyncStorage.setItem(APP_REFRESH_TOKEN, response.data.refreshToken);
@@ -59,7 +58,9 @@ function RegisterScreen({navigation}) {
     }
   }
   return (
-    <ScreenContainer>
+    <ImageBackground
+      source={require('../../assets/jpg/whatsup_background.jpeg')}
+      style={STYLE.image_background}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={STYLE.commonHorizontalPad}>
@@ -88,14 +89,14 @@ function RegisterScreen({navigation}) {
               style={{marginTop: SPACING.v40}}
               isLoading={loading}
             />
-            <Text style={STYLE.terms}>
-              By Signing in you agree to the{' '}
-              <Text style={{color: COLOR.primary}}>terms of service</Text>
-            </Text>
+            <View style={REGISTER_STYLE.row_margin}>
+              <Text style={STYLE.terms}>By Signing in you agree to the </Text>
+              <Text style={REGISTER_STYLE.terms_text}>terms of service</Text>
+            </View>
           </View>
         </View>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </ImageBackground>
   );
 }
 

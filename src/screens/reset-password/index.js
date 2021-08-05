@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Image, KeyboardAvoidingView, Platform, Text, View} from 'react-native';
-import {ScreenContainer, TouchableItem} from '../../elements';
+import {ScreenContainer} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
-import {COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
+import {SPACING} from '../../constants';
 import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
@@ -36,12 +36,7 @@ function ResetPasswordScreen({navigation}) {
             value={confirmPass}
             onChange={setConfirmPass}
           />
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: SPACING.v40,
-            }}>
+          <View style={STYLE.button_top_margin}>
             <LoginButton
               onPress={() => navigateTo(navigation, Routes.Otp)}
               title={'Submit'.toUpperCase()}

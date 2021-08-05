@@ -1,8 +1,14 @@
 import React, {useState} from 'react';
-import {Image, KeyboardAvoidingView, Platform, Text, View} from 'react-native';
-import {ScreenContainer, TouchableItem} from '../../elements';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  View,
+  ImageBackground,
+} from 'react-native';
 import {STYLE, LoginButton} from '../../common';
-import {COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
+import {SPACING} from '../../constants';
 import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
@@ -29,6 +35,8 @@ function ForgotPasswordScreen({navigation}) {
           if (res.success) {
             alert(res.message);
             navigateTo(navigation, Routes.Otp);
+          } else {
+            alert(res.message);
           }
         })
         .catch(err => {
@@ -38,7 +46,9 @@ function ForgotPasswordScreen({navigation}) {
   }
 
   return (
-    <ScreenContainer>
+    <ImageBackground
+      source={require('../../assets/jpg/whatsup_background.jpeg')}
+      style={STYLE.image_background}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={STYLE.commonHorizontalPad}>
@@ -47,33 +57,26 @@ function ForgotPasswordScreen({navigation}) {
             source={require('../../assets/png/app-logo.png')}
             style={STYLE.logo_app}
           />
-          {/*<Text style={STYLE.medium_white}>COLLECTORS EDITION</Text>*/}
         </View>
         <View style={[STYLE.justify_center, {marginTop: SPACING.v20}]}>
           <Text style={STYLE.large_white}>Trouble Logging in?</Text>
         </View>
         <View style={{marginTop: SPACING.v50}}>
-          <Text style={STYLE.x_small_white}>
+          <Text style={[STYLE.x_small_white, {textAlign: 'center'}]}>
             Enter your email and we’ll send you an OTP to get back into your
             account
           </Text>
           <InputText label={'Email'} value={email} onChange={setEmail} />
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: SPACING.v40,
-            }}>
-            <LoginButton
-              onPress={forgotPassword}
-              title={'Send otp'.toUpperCase()}
-              style={{marginTop: SPACING.v40}}
-              isLoading={loading}
-            />
-          </View>
+
+          <LoginButton
+            onPress={forgotPassword}
+            title={'Send otp'.toUpperCase()}
+            style={{marginTop: SPACING.v80, alignSelf: 'center'}}
+            isLoading={loading}
+          />
         </View>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </ImageBackground>
   );
 }
 

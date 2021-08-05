@@ -22,6 +22,8 @@ import EditProfileScreen from '../screens/edit-profile';
 
 //common files
 import {COLOR, FONT_SIZE, NAVIGATION_REF, SPACING} from '../constants';
+import {STYLE} from '../common';
+import {Image} from 'react-native';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -40,16 +42,26 @@ function MyTabs() {
         },
         tabStyle: {
           height: SPACING.v70,
-          paddingBottom: SPACING.v20,
         },
       }}>
       <Tab.Screen
         name={Routes.Home}
         component={HomeScreen}
         options={{
-          tabBarLabel: 'CE',
+          tabBarLabel: '',
           tabBarIcon: ({focused, color, style}) => {
-            return <Icon name="home" size={30} color={color} />;
+            return (
+              <Image
+                source={require('../assets/png/app-logo.png')}
+                tintColor={color}
+                style={{
+                  height: SPACING.v40,
+                  width: SPACING.v40,
+                  resizeMode: 'contain',
+                }}
+              />
+              // <Icon name="home" size={30} color={color} />
+            );
           },
         }}
       />
@@ -57,7 +69,7 @@ function MyTabs() {
         name={Routes.Upload}
         component={UploadScreen}
         options={{
-          tabBarLabel: 'Upload',
+          tabBarLabel: '',
           tabBarIcon: ({focused, color, style}) => {
             return <Icon name="plus-box-multiple" size={25} color={color} />;
           },
@@ -67,7 +79,7 @@ function MyTabs() {
         name={Routes.UserProfile}
         component={UserProfileScreen}
         options={{
-          tabBarLabel: 'User',
+          tabBarLabel: '',
           tabBarIcon: ({focused, color, style}) => {
             return <Icon name="account-box" size={25} color={color} />;
           },

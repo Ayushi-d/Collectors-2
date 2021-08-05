@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
-import {Image, View, KeyboardAvoidingView, Platform, Text} from 'react-native';
-import {ScreenContainer, TouchableItem} from '../../elements';
+import {
+  Image,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  ImageBackground,
+} from 'react-native';
+import {TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
 import {SPACING} from '../../constants';
 import {OtpInput} from '../../components';
@@ -29,16 +36,24 @@ function OtpScreen({navigation, route}) {
     }
   }
   return (
-    <ScreenContainer>
+    <ImageBackground
+      source={require('../../assets/jpg/whatsup_background.jpeg')}
+      style={STYLE.image_background}>
       <View style={STYLE.commonHorizontalPad}>
         <Image
           source={require('../../assets/png/app-logo.png')}
-          style={STYLE.app_logo}
+          style={[
+            STYLE.logo_app,
+            {
+              alignSelf: 'center',
+              marginTop: SPACING.v50,
+            },
+          ]}
         />
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : ''}
           style={{paddingTop: SPACING.v25}}>
-          <Text style={STYLE.white_16}>
+          <Text style={[STYLE.white_16, {textAlign: 'center'}]}>
             Please enter the OTP sent to your registered email I’d
           </Text>
           <View style={STYLE.space_wrapper}>
@@ -96,17 +111,17 @@ function OtpScreen({navigation, route}) {
               }}
             />
           </View>
-          <TouchableItem style={{marginLeft: 'auto', marginTop: SPACING.v10}}>
+          <TouchableItem style={STYLE.resend}>
             <Text style={STYLE.white_14}>Resend OTP</Text>
           </TouchableItem>
           <LoginButton
             onPress={pressNext}
             title={'Submit'}
-            style={{marginTop: SPACING.v50}}
+            style={STYLE.button_top_margin}
           />
         </KeyboardAvoidingView>
       </View>
-    </ScreenContainer>
+    </ImageBackground>
   );
 }
 

@@ -4,11 +4,11 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ScreenContainer, TouchableItem} from '../../elements';
 import {LoginButton, STYLE} from '../../common';
-import {COLOR, FONT_SIZE, HEIGHT, SPACING} from '../../constants';
+import {COLOR, FONT_SIZE, FONTS, HEIGHT, SPACING} from '../../constants';
 import {InputText, NavigationHeader} from '../../components';
 import {UPLOAD_STYLE} from './style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {navigateTo} from '../../helpers';
+import {navigateTo, uploadFileToS3} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 
 let mediaOptions = {
@@ -39,6 +39,8 @@ function UploadScreen({navigation}) {
     {label: 'fsdfjsfj', value: 'scvhd'},
   ]);
   const [imageSource, setImageSource] = useState([]);
+  const [myArray, setMyArray] = useState([]);
+  const [imageUrl, setImageUrl] = useState([]);
   function openAlert() {
     Alert.alert(
       'Take a picture',
@@ -63,7 +65,16 @@ function UploadScreen({navigation}) {
         console.log('ImagePicker Error: ', response.errorCode);
       } else {
         const source = {uri: response.assets[0].uri};
-        setImageSource([...imageSource, source]);
+        console.log('source', source);
+        const name = `CE-${new Date().getTime()}.${
+          response.assets[0].type.split('/')[1]
+        }`;
+        const file = {
+          name: name,
+          type: response.assets[0].type,
+          uri: response.assets[0].uri,
+        };
+        setImageSource([...imageSource, file]);
       }
     });
   }
@@ -78,12 +89,53 @@ function UploadScreen({navigation}) {
       } else {
         const source = {uri: response.assets[0].uri};
         console.log('source', source);
-        setImageSource([...imageSource, source]);
+        const name = `CE-${new Date().getTime()}.${
+          response.assets[0].type.split('/')[1]
+        }`;
+        const file = {
+          name: name,
+          type: response.assets[0].type,
+          uri: response.assets[0].uri,
+        };
+        setImageSource([...imageSource, file]);
       }
     });
   }
 
+  async function uploadImages() {
+    // imageSource.map(files => {
+    //   console.log('files is', files);
+    //   return uploadFileToS3(files)
+    //     .progress(e => {
+    //       console.log(e.loaded / e.total);
+    //     })
+    //     .then(async s3Response => {
+    //       if (s3Response.status !== 201) {
+    //         alert('Failed to upload image');
+    //       } else {
+    //         console.log(
+    //           's3Response complete url',
+    //           `https://collectors-images.s3.us-east-2.amazonaws.com${s3Response.body.postResponse.key}`,
+    //         );
+    //         setImageUrl([
+    //           ...imageUrl,
+    //           `https://collectors-images.s3.us-east-2.amazonaws.com${s3Response.body.postResponse.key}`,
+    //         ]);
+    //         myArray.push(
+    //           `https://collectors-images.s3.us-east-2.amazonaws.com${s3Response.body.postResponse.key}`,
+    //         );
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log('error is', err);
+    //     });
+    // });
+    // setMyArray(myArray);
+  }
+
   console.log('image source is', imageSource);
+  console.log('image url is', imageUrl);
+  console.log('my array is', myArray);
   return (
     <ScreenContainer>
       <NavigationHeader navigation={navigation} />
@@ -107,35 +159,40 @@ function UploadScreen({navigation}) {
             Post a Collectible to the Collectors Community
           </Text>
           <TouchableItem
-              onPress={openAlert}
-            style={{
-              height: SPACING.v70,
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignSelf: 'center',
-              marginVertical: SPACING.v10,
-              width: SPACING.v70,
-              borderWidth: 1,
-              borderColor: COLOR.white,
-            }}>
+            onPress={openAlert}
+            style={UPLOAD_STYLE.plus_button}>
             <Icon name={'plus'} size={30} color={COLOR.white} />
           </TouchableItem>
-          <InputText
-            label={'Collectible name'}
-            value={name}
-            onChange={setName}
-            marginTop={0}
-            height={SPACING.v50}
-          />
-          <Text style={[STYLE.button_text, {marginVertical: SPACING.v10}]}>
-            Category
+          <Text
+            style={[
+              STYLE.white_14,
+              {textAlign: 'center', paddingVertical: SPACING.v10},
+            ]}>
+            Add Image
           </Text>
+          {/*<InputText*/}
+          {/*  label={'Collectible name'}*/}
+          {/*  value={name}*/}
+          {/*  onChange={setName}*/}
+          {/*  marginTop={0}*/}
+          {/*  height={SPACING.v50}*/}
+          {/*/>*/}
+          <TextInput
+            placeholder={'Collectible Name'}
+            placeholderTextColor={COLOR.white}
+            style={UPLOAD_STYLE.name_input}
+          />
+          {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10}]}>*/}
+          {/*  Category*/}
+          {/*</Text>*/}
           <DropDownPicker
+            showArrowIcon={false}
             style={UPLOAD_STYLE.dropdown}
             open={open}
             value={value}
             items={items}
             setOpen={setOpen}
+            placeholder={'Select Category'}
             setValue={setValue}
             setItems={setItems}
             zIndex={2000}
@@ -147,6 +204,7 @@ function UploadScreen({navigation}) {
             textStyle={{
               fontSize: FONT_SIZE.f14,
               color: COLOR.white,
+              fontFamily: FONTS.montRegular,
             }}
           />
           {value === 'others' ? (
@@ -165,13 +223,15 @@ function UploadScreen({navigation}) {
             </View>
           ) : (
             <View>
-              <Text style={[STYLE.button_text, {marginVertical: SPACING.v10}]}>
-                Sub-Category
-              </Text>
+              {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10}]}>*/}
+              {/*  Sub-Category*/}
+              {/*</Text>*/}
               <DropDownPicker
                 style={UPLOAD_STYLE.dropdown}
                 open={subOpen}
+                showArrowIcon={false}
                 value={subValue}
+                placeholder={'Select Sub-Category'}
                 items={subCategory}
                 setOpen={setSubOpen}
                 setValue={setSubValue}
@@ -185,23 +245,28 @@ function UploadScreen({navigation}) {
                 textStyle={{
                   fontSize: FONT_SIZE.f14,
                   color: COLOR.white,
+                  fontFamily: FONTS.montRegular,
                 }}
               />
             </View>
           )}
-          <Text style={[STYLE.button_text, {marginTop: SPACING.v10}]}>
-            Description
-          </Text>
+          {/*<Text style={[STYLE.button_text, {marginTop: SPACING.v10}]}>*/}
+          {/*  Description*/}
+          {/*</Text>*/}
           <TextInput
-            placeholder={'Write Something'}
-            placeholderTextColor={COLOR.black}
+            placeholder={'Description'}
+            placeholderTextColor={COLOR.white}
             multiline={true}
-            onContentSizeChange={(event) => {
+            onContentSizeChange={event => {
               setHeight(event.nativeEvent.contentSize.height);
             }}
             style={[
               UPLOAD_STYLE.input,
-              {textAlignVertical: 'top', height: Math.max(35, height)},
+              {
+                textAlignVertical: 'top',
+                height: Math.max(35, height),
+                marginHorizontal: SPACING.v5,
+              },
             ]}
           />
           {imageSource.map((item, index) => {
@@ -210,17 +275,10 @@ function UploadScreen({navigation}) {
             );
           })}
           <LoginButton
-            onPress={() => {}}
-            style={{marginVertical: SPACING.v20}}
+            onPress={uploadImages}
+            style={STYLE.button_top_margin}
             title={'Upload'}
           />
-          {/*{imageSource.length > 0 && (*/}
-          {/*  <LoginButton*/}
-          {/*    onPress={() => navigateTo(navigation, Routes.Home)}*/}
-          {/*    style={{marginVertical: SPACING.v20}}*/}
-          {/*    title={'Upload'}*/}
-          {/*  />*/}
-          {/*)}*/}
         </ScrollView>
       </View>
     </ScreenContainer>

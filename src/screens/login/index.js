@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
-import {Image, KeyboardAvoidingView, Platform, Text, View} from 'react-native';
-import {ScreenContainer, TouchableItem} from '../../elements';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  View,
+  ImageBackground,
+} from 'react-native';
+import {TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
 import {ACCESS_TOKEN, APP_REFRESH_TOKEN, SPACING} from '../../constants';
 import {InputText} from '../../components';
@@ -35,7 +42,6 @@ function LoginScreen({navigation}) {
       loginUser(email, password, 'APP_USER')
         .then(response => {
           setLoading(false);
-          console.log('response here is', response);
           if (response.success) {
             AsyncStorage.setItem(ACCESS_TOKEN, response.data.token);
             AsyncStorage.setItem(APP_REFRESH_TOKEN, response.data.refreshToken);
@@ -50,7 +56,9 @@ function LoginScreen({navigation}) {
     }
   }
   return (
-    <ScreenContainer>
+    <ImageBackground
+      source={require('../../assets/jpg/whatsup_background.jpeg')}
+      style={STYLE.image_background}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={STYLE.commonHorizontalPad}>
@@ -59,7 +67,6 @@ function LoginScreen({navigation}) {
             source={require('../../assets/png/app-logo.png')}
             style={STYLE.logo_app}
           />
-          {/*<Text style={STYLE.medium_white}>COLLECTORS EDITION</Text>*/}
         </View>
         <View style={[STYLE.justify_center, {marginTop: SPACING.v20}]}>
           <Text style={STYLE.large_white}>Log in to continue</Text>
@@ -86,7 +93,7 @@ function LoginScreen({navigation}) {
           </View>
         </View>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </ImageBackground>
   );
 }
 

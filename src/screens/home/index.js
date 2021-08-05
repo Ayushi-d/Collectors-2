@@ -62,16 +62,16 @@ function HomeScreen({navigation}) {
         activeDotIndex={activeSlide}
         containerStyle={HOME_STYLE.pagination_container}
         dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
+          width: 5,
+          height: 5,
+          borderRadius: 3,
         }}
         dotColor={COLOR.yellow1}
         inactiveDotColor={COLOR.white}
         inactiveDotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
+          width: 5,
+          height: 5,
+          borderRadius: 3,
           backgroundColor: COLOR.white,
         }}
         inactiveDotOpacity={1.1}
@@ -98,7 +98,6 @@ function HomeScreen({navigation}) {
               Item for sale
             </Text>
           </View>
-          {/*<Text style={[STYLE.white_16, {marginLeft:'auto'}]}>$12</Text>*/}
         </View>
         <Carousel
           data={CarouselData}
@@ -124,13 +123,13 @@ function HomeScreen({navigation}) {
         </Text>
         <View style={HOME_STYLE.share_icons}>
           <TouchableItem>
-            <Icon name={'thumb-up-outline'} color={COLOR.white} size={30} />
+            <Icon name={'thumb-up-outline'} color={COLOR.white} size={22} />
           </TouchableItem>
           <TouchableItem style={{marginHorizontal: SPACING.v20}}>
-            <Icon name={'comment-outline'} color={COLOR.white} size={30} />
+            <Icon name={'comment-outline'} color={COLOR.white} size={22} />
           </TouchableItem>
           <TouchableItem style={STYLE.margin_auto}>
-            <Icon name={'share'} color={COLOR.white} size={30} />
+            <Icon name={'share'} color={COLOR.white} size={22} />
           </TouchableItem>
         </View>
       </View>
@@ -139,7 +138,6 @@ function HomeScreen({navigation}) {
 
   return (
     <ScreenContainer>
-      {/*<View style={STYLE.flex_white}>*/}
       <NavigationHeader navigation={navigation} />
       <View style={STYLE.background}>
         <ScrollView
@@ -147,13 +145,9 @@ function HomeScreen({navigation}) {
             STYLE.padding_wrapper,
             {paddingBottom: SPACING.v20},
           ]}>
-          {/*<Text style={STYLE.medium_white}>Funkos Collection</Text>*/}
-          {/*<Text style={STYLE.white_12}>Popular Funkos</Text>*/}
           <FlatList data={DATA} renderItem={renderItem} />
         </ScrollView>
       </View>
-
-      {/*</View>*/}
     </ScreenContainer>
   );
 }

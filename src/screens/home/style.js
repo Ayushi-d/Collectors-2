@@ -14,7 +14,7 @@ export const HOME_STYLE = StyleSheet.create({
     paddingTop: SPACING.v10,
   },
   user_image: {
-    height: DIMENSIONS.WINDOW_HEIGHT / 3,
+    height: DIMENSIONS.WINDOW_HEIGHT / 4,
     width: '80%',
     marginRight: SPACING.v40,
     resizeMode: 'cover',
@@ -22,7 +22,7 @@ export const HOME_STYLE = StyleSheet.create({
     borderRadius: SPACING.v10,
   },
   black_background: {
-    height: DIMENSIONS.WINDOW_HEIGHT / 1.7,
+    height: DIMENSIONS.WINDOW_HEIGHT / 1.9,
     backgroundColor: COLOR.black,
     marginTop: SPACING.v15,
     borderRadius: SPACING.v10,
