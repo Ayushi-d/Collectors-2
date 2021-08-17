@@ -2,12 +2,11 @@ import React from 'react';
 import {View, ScrollView, Text, Image, FlatList} from 'react-native';
 import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
-import {navigateTo} from '../../helpers';
-import {Routes} from '../../navigation/routes';
 import {COLOR, DIMENSIONS, SPACING} from '../../constants';
 import {NavigationHeader} from '../../components';
 
-function PostDetailScreen({navigation}) {
+function PostDetailScreen({navigation, route}) {
+  console.log('route is', route);
   return (
     <ScreenContainer>
       <NavigationHeader navigation={navigation} />
@@ -32,7 +31,11 @@ function PostDetailScreen({navigation}) {
             </View>
           </View>
           <Image
-            source={require('../../assets/png/user.png')}
+            source={
+              route.params.imageUri
+                ? {uri: route.params.imageUri}
+                : require('../../assets/png/user.png')
+            }
             style={STYLE.detail_image}
           />
           <Text style={[STYLE.x_small_white, {marginTop: SPACING.v20}]}>

@@ -5,7 +5,7 @@ import {COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
 
 export function InputText(props) {
   const onChange = React.useCallback(text => props.onChange(text), [props]);
-  const {marginTop = SPACING.v30, height} = props;
+  const {marginTop = SPACING.v30, height, onEyePress, right, editable} = props;
   return (
     <View style={{marginTop: marginTop}}>
       <TextInput
@@ -17,6 +17,8 @@ export function InputText(props) {
         selectionColor={COLOR.white}
         underlineColor={COLOR.blue}
         secureTextEntry={props.secureTextEntry}
+        right={right}
+        editable={editable}
         theme={{
           colors: {
             placeholder: COLOR.white,

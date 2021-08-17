@@ -127,7 +127,6 @@ function UserProfileScreen({navigation, user}) {
 }
 
 export function mapStateToProps(state) {
-  console.log('state is', state);
   return {
     user: state.userProfile.user,
   };

@@ -1,15 +1,34 @@
 import React, {useState} from 'react';
-import {ScrollView, Text, TextInput, Alert, Image, View} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  Alert,
+  Image,
+  View,
+  Platform,
+} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ScreenContainer, TouchableItem} from '../../elements';
 import {LoginButton, STYLE} from '../../common';
-import {COLOR, FONT_SIZE, FONTS, HEIGHT, SPACING} from '../../constants';
-import {InputText, NavigationHeader} from '../../components';
+import {
+  ACCESS_TOKEN,
+  COLOR,
+  FONT_SIZE,
+  FONTS,
+  HEIGHT,
+  SPACING,
+} from '../../constants';
+import {NavigationHeader} from '../../components';
 import {UPLOAD_STYLE} from './style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {navigateTo, uploadFileToS3} from '../../helpers';
 import {Routes} from '../../navigation/routes';
+import {getAllPost, getUserProfile, uploadImagePost} from '../../actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect, useDispatch} from 'react-redux';
+import ImageResizer from 'react-native-image-resizer';
 
 let mediaOptions = {
   mediaType: 'photo',
@@ -18,7 +37,9 @@ let mediaOptions = {
   quality: 1,
 };
 function UploadScreen({navigation}) {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [height, setHeight] = useState(0);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -30,13 +51,11 @@ function UploadScreen({navigation}) {
     {label: 'Others', value: 'others'},
   ]);
   const [subOpen, setSubOpen] = useState(false);
+  const [imageUpload, setImageUploading] = useState(false);
   const [subValue, setSubValue] = useState(null);
   const [subCategory, setSubCategory] = useState([
     {label: 'abc', value: 'absd'},
     {label: 'cdf', value: 'bdcdsbjc'},
-    {label: 'ghft', value: 'hvcdsh'},
-    {label: 'dfbdsbf', value: 'scvhd'},
-    {label: 'fsdfjsfj', value: 'scvhd'},
   ]);
   const [imageSource, setImageSource] = useState([]);
   const [myArray, setMyArray] = useState([]);
@@ -47,13 +66,34 @@ function UploadScreen({navigation}) {
       'Would you like to open camera or gallery ?',
       [
         {
-          text: 'Open Camera',
+          text: 'Camera',
           onPress: () => openCamera(),
-          style: 'cancel',
         },
-        {text: 'Open Gallery', onPress: () => openGallery()},
+        {text: 'Gallery', onPress: () => openGallery()},
+        {text: 'Cancel', onPress: () => {}},
       ],
     );
+  }
+
+  function resizeImage(res) {
+    return ImageResizer.createResizedImage(
+      res.uri,
+      res.width,
+      res.height,
+      'JPEG',
+      100,
+      res?.originalRotation || 0,
+      undefined,
+      false,
+      {},
+    )
+      .then(resizedImage => {
+        console.log('resizedImage', resizedImage);
+        return resizedImage;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   function openGallery() {
@@ -64,17 +104,23 @@ function UploadScreen({navigation}) {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorCode);
       } else {
-        const source = {uri: response.assets[0].uri};
-        console.log('source', source);
-        const name = `CE-${new Date().getTime()}.${
-          response.assets[0].type.split('/')[1]
-        }`;
-        const file = {
-          name: name,
-          type: response.assets[0].type,
-          uri: response.assets[0].uri,
-        };
-        setImageSource([...imageSource, file]);
+        let imageSize = await resizeImage(response.assets[0]);
+        console.log('image size is', imageSize);
+        if (imageSize) {
+          const name = `CE-${new Date().getTime()}.${
+            response.assets[0].type.split('/')[1]
+          }`;
+          const file = {
+            name: name,
+            type: response.assets[0].type,
+            uri:
+              Platform.OS === 'ios'
+                ? imageSize.uri.replace('file://', '')
+                : imageSize.uri,
+          };
+          setImageSource([...imageSource, file]);
+          // await uploadedToS3(file);
+        }
       }
     });
   }
@@ -87,55 +133,103 @@ function UploadScreen({navigation}) {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorCode);
       } else {
-        const source = {uri: response.assets[0].uri};
-        console.log('source', source);
-        const name = `CE-${new Date().getTime()}.${
-          response.assets[0].type.split('/')[1]
-        }`;
-        const file = {
-          name: name,
-          type: response.assets[0].type,
-          uri: response.assets[0].uri,
-        };
-        setImageSource([...imageSource, file]);
+        let imageSize = await resizeImage(response.assets[0]);
+        if (imageSize) {
+          const name = `CE-${new Date().getTime()}.${
+            response.assets[0].type.split('/')[1]
+          }`;
+          const file = {
+            name: name,
+            type: response.assets[0].type,
+            uri:
+              Platform.OS === 'ios'
+                ? imageSize.uri.replace('file://', '')
+                : imageSize.uri,
+          };
+          setImageSource([...imageSource, file]);
+          // await uploadedToS3(file);
+        }
       }
     });
   }
 
   async function uploadImages() {
-    // imageSource.map(files => {
-    //   console.log('files is', files);
-    //   return uploadFileToS3(files)
-    //     .progress(e => {
-    //       console.log(e.loaded / e.total);
-    //     })
-    //     .then(async s3Response => {
-    //       if (s3Response.status !== 201) {
-    //         alert('Failed to upload image');
-    //       } else {
-    //         console.log(
-    //           's3Response complete url',
-    //           `https://collectors-images.s3.us-east-2.amazonaws.com${s3Response.body.postResponse.key}`,
-    //         );
-    //         setImageUrl([
-    //           ...imageUrl,
-    //           `https://collectors-images.s3.us-east-2.amazonaws.com${s3Response.body.postResponse.key}`,
-    //         ]);
-    //         myArray.push(
-    //           `https://collectors-images.s3.us-east-2.amazonaws.com${s3Response.body.postResponse.key}`,
-    //         );
-    //       }
-    //     })
-    //     .catch(err => {
-    //       console.log('error is', err);
-    //     });
-    // });
-    // setMyArray(myArray);
+    if (!name) {
+      alert('Image title is required');
+    } else if (!value) {
+      alert('Category is required');
+    } else if (!subValue) {
+      alert('Sub category is required');
+    } else if (!description) {
+      alert('Description is required');
+    } else if (imageSource.length === 0) {
+      alert('Images is required');
+    } else {
+      var promises = imageSource.map(files => {
+        console.log('files is', files);
+        setImageUploading(true);
+        return uploadFileToS3(files)
+          .progress(e => {
+            console.log(e.loaded / e.total);
+          })
+          .then(async s3Response => {
+            if (s3Response.status !== 201) {
+              alert('Failed to upload image');
+            } else {
+              console.log(
+                's3Response complete url',
+                `https://collectors-images.s3.us-east-2.amazonaws.com/${s3Response.body.postResponse.key}`,
+              );
+              setImageUrl([
+                ...imageUrl,
+                `https://collectors-images.s3.us-east-2.amazonaws.com/${s3Response.body.postResponse.key}`,
+              ]);
+              myArray.push(
+                `https://collectors-images.s3.us-east-2.amazonaws.com/${s3Response.body.postResponse.key}`,
+              );
+              return `https://collectors-images.s3.us-east-2.amazonaws.com/${s3Response.body.postResponse.key}`;
+            }
+          })
+          .catch(err => {
+            console.log('error in what', err);
+          });
+      });
+      Promise.all(promises).then(async function (results) {
+        console.log('results are', results);
+        if (results.length > 0) {
+          await setMyArray(myArray);
+          await uploadImageToApi(results);
+        }
+      });
+    }
   }
 
-  console.log('image source is', imageSource);
-  console.log('image url is', imageUrl);
-  console.log('my array is', myArray);
+  async function uploadImageToApi(imagesArray) {
+    console.log('images aray is', imagesArray);
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+    setImageUploading(true);
+    uploadImagePost(token, name, imagesArray).then(async res => {
+      console.log('response of list', res);
+      setImageUploading(false);
+      if (res.success) {
+        alert('Images upload successfully');
+        await dispatch(getAllPost(token));
+        await navigateTo(navigation, Routes.Home);
+        await setName('');
+        await setValue(null);
+        await setSubValue(null);
+        await setDescription('');
+        await setMyArray([]);
+        await setImageSource([]);
+      }
+    });
+  }
+
+  function deleteImage(index) {
+    imageSource.splice(index, 1);
+    setImageSource([...imageSource]);
+  }
+
   return (
     <ScreenContainer>
       <NavigationHeader navigation={navigation} />
@@ -158,33 +252,53 @@ function UploadScreen({navigation}) {
             ]}>
             Post a Collectible to the Collectors Community
           </Text>
-          <TouchableItem
-            onPress={openAlert}
-            style={UPLOAD_STYLE.plus_button}>
-            <Icon name={'plus'} size={30} color={COLOR.white} />
-          </TouchableItem>
-          <Text
-            style={[
-              STYLE.white_14,
-              {textAlign: 'center', paddingVertical: SPACING.v10},
-            ]}>
-            Add Image
-          </Text>
-          {/*<InputText*/}
-          {/*  label={'Collectible name'}*/}
-          {/*  value={name}*/}
-          {/*  onChange={setName}*/}
-          {/*  marginTop={0}*/}
-          {/*  height={SPACING.v50}*/}
-          {/*/>*/}
+          {imageSource && imageSource.length < 8 && (
+            <View>
+              <TouchableItem
+                onPress={openAlert}
+                style={UPLOAD_STYLE.plus_button}>
+                <Icon name={'plus'} size={30} color={COLOR.white} />
+              </TouchableItem>
+              <Text
+                style={[
+                  STYLE.white_14,
+                  {textAlign: 'center', paddingVertical: SPACING.v10},
+                ]}>
+                Add Image
+              </Text>
+            </View>
+          )}
+          {imageSource && imageSource.length > 0 && (
+            <View style={{flexDirection: 'row', flex: 1, flexWrap: 'wrap'}}>
+              {imageSource.map((item, index) => {
+                return (
+                  <View
+                    style={{flexDirection: 'row', paddingLeft: SPACING.v15}}>
+                    <Image
+                      source={{uri: item.uri}}
+                      style={UPLOAD_STYLE.image}
+                    />
+                    <TouchableItem
+                      onPress={() => deleteImage(index)}
+                      style={{position: 'absolute', top: 3, right: -15}}>
+                      <Icon
+                        name={'close-circle-outline'}
+                        color={'red'}
+                        size={20}
+                      />
+                    </TouchableItem>
+                  </View>
+                );
+              })}
+            </View>
+          )}
           <TextInput
             placeholder={'Collectible Name'}
             placeholderTextColor={COLOR.white}
             style={UPLOAD_STYLE.name_input}
+            value={name}
+            onChangeText={setName}
           />
-          {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10}]}>*/}
-          {/*  Category*/}
-          {/*</Text>*/}
           <DropDownPicker
             showArrowIcon={false}
             style={UPLOAD_STYLE.dropdown}
@@ -209,23 +323,25 @@ function UploadScreen({navigation}) {
           />
           {value === 'others' ? (
             <View>
-              <Text style={[STYLE.button_text, {marginVertical: SPACING.v10}]}>
-                Enter Category
-              </Text>
+              {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10, fontFamily: FONTS.montRegular, paddingLeft: SPACING.v10}]}>*/}
+              {/*  Enter Category*/}
+              {/*</Text>*/}
               <TextInput
                 placeholder={'Write Something'}
-                placeholderTextColor={COLOR.black}
+                placeholderTextColor={COLOR.white}
+                multiline={true}
                 style={[
                   UPLOAD_STYLE.input,
-                  {height: HEIGHT.h150, textAlignVertical: 'top'},
+                  {
+                    height: HEIGHT.h150,
+                    textAlignVertical: 'top',
+                    fontFamily: FONTS.montRegular,
+                  },
                 ]}
               />
             </View>
           ) : (
             <View>
-              {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10}]}>*/}
-              {/*  Sub-Category*/}
-              {/*</Text>*/}
               <DropDownPicker
                 style={UPLOAD_STYLE.dropdown}
                 open={subOpen}
@@ -250,13 +366,12 @@ function UploadScreen({navigation}) {
               />
             </View>
           )}
-          {/*<Text style={[STYLE.button_text, {marginTop: SPACING.v10}]}>*/}
-          {/*  Description*/}
-          {/*</Text>*/}
           <TextInput
             placeholder={'Description'}
             placeholderTextColor={COLOR.white}
             multiline={true}
+            value={description}
+            onChangeText={setDescription}
             onContentSizeChange={event => {
               setHeight(event.nativeEvent.contentSize.height);
             }}
@@ -265,19 +380,15 @@ function UploadScreen({navigation}) {
               {
                 textAlignVertical: 'top',
                 height: Math.max(35, height),
-                marginHorizontal: SPACING.v5,
               },
             ]}
           />
-          {imageSource.map((item, index) => {
-            return (
-              <Image source={{uri: item.uri}} style={UPLOAD_STYLE.image} />
-            );
-          })}
           <LoginButton
             onPress={uploadImages}
             style={STYLE.button_top_margin}
             title={'Upload'}
+            isLoading={imageUpload}
+            disable={imageUpload}
           />
         </ScrollView>
       </View>
@@ -285,4 +396,10 @@ function UploadScreen({navigation}) {
   );
 }
 
-export default UploadScreen;
+export function mapStateToProps(state) {
+  return {
+    user: state.userProfile.user,
+  };
+}
+
+export default connect(mapStateToProps, null)(UploadScreen);

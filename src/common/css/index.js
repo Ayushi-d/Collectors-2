@@ -268,7 +268,7 @@ export const STYLE = StyleSheet.create({
     fontFamily: FONTS.montLight,
   },
   detail_image: {
-    height: DIMENSIONS.WINDOW_HEIGHT / 3,
+    height: DIMENSIONS.WINDOW_HEIGHT / 2,
     width: '100%',
     resizeMode: 'cover',
   },
@@ -278,7 +278,8 @@ export const STYLE = StyleSheet.create({
   },
   image_background: {
     width: '100%',
-    height: DIMENSIONS.WINDOW_HEIGHT,
+    height: '100%',
+    resizeMode: 'cover',
   },
   resend: {
     marginLeft: 'auto',

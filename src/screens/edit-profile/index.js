@@ -45,7 +45,12 @@ function EditProfileScreen({navigation, user}) {
         <View style={STYLE.padding_wrapper}>
           <Text style={STYLE.medium_white}>Edit Profile</Text>
           <InputText label={'Name'} value={name} onChange={setName} />
-          <InputText label={'Email'} value={email} onChange={setEmail} />
+          <InputText
+            editable={false}
+            label={'Email'}
+            value={email}
+            onChange={setEmail}
+          />
           <InputText label={'Bio'} value={bio} onChange={setBio} />
           <LoginButton
             title={'Save'}

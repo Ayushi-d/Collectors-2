@@ -1,16 +1,29 @@
-import React, {useState} from 'react';
-import {View, ScrollView, Text, Image, FlatList} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE} from '../../common';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
-import {COLOR, DIMENSIONS, FONTS, SPACING} from '../../constants';
-import {NavigationHeader} from '../../components';
+import {ACCESS_TOKEN, COLOR, DIMENSIONS, FONTS, SPACING} from '../../constants';
+import {Loader, NavigationHeader} from '../../components';
 import {HOME_STYLE} from './style';
+import {connect, useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getAllPost, getUserProfile} from '../../actions';
 
-function HomeScreen({navigation}) {
+function HomeScreen({navigation, user, posts}) {
+  console.log('all posts are', posts);
+  const dispatch = useDispatch();
+  console.log('home profile is', user);
   const [activeSlide, setActiveSlide] = useState(0);
   const CarouselData = [
     {
@@ -30,13 +43,31 @@ function HomeScreen({navigation}) {
   function renderCarouselItem({item, index}) {
     return (
       <TouchableItem
-        onPress={() => navigateTo(navigation, Routes.PostDetail)}
+        onPress={() =>
+          navigateTo(navigation, Routes.PostDetail, {imageUri: item})
+        }
         style={[STYLE.justify_center, {width: '100%'}]}
         key={index}>
-        <Image source={item.img} style={HOME_STYLE.user_image} />
+        <Image
+          blurRadius={0}
+          source={{uri: item}}
+          style={HOME_STYLE.user_image}
+        />
       </TouchableItem>
     );
   }
+
+  useEffect(() => {
+    (async function f() {
+      const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+      await dispatch(getUserProfile(token));
+      await dispatch(getAllPost(token));
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log('user is', user);
+  }, [user, posts]);
 
   const DATA = [
     {
@@ -55,10 +86,10 @@ function HomeScreen({navigation}) {
     setActiveSlide(index);
   }
 
-  function pagination() {
+  function pagination(item) {
     return (
       <Pagination
-        dotsLength={CarouselData.length}
+        dotsLength={item.images.length}
         activeDotIndex={activeSlide}
         containerStyle={HOME_STYLE.pagination_container}
         dotStyle={{
@@ -92,7 +123,7 @@ function HomeScreen({navigation}) {
           </View>
           <View>
             <Text style={[STYLE.white_12, {fontFamily: FONTS.montMedium}]}>
-              {item.name}
+              {item.title}
             </Text>
             <Text style={[STYLE.white_12, {fontFamily: FONTS.montMedium}]}>
               Item for sale
@@ -100,7 +131,7 @@ function HomeScreen({navigation}) {
           </View>
         </View>
         <Carousel
-          data={CarouselData}
+          data={item.images}
           renderItem={renderCarouselItem}
           sliderWidth={DIMENSIONS.WINDOW_WIDTH}
           sliderHeight={DIMENSIONS.WINDOW_HEIGHT}
@@ -113,14 +144,14 @@ function HomeScreen({navigation}) {
           contentContainerCustomStyle={{alignItems: 'center'}}
           onSnapToItem={slideActive}
         />
-        {pagination()}
-        <Text
-          style={[
-            STYLE.white_12,
-            {paddingHorizontal: SPACING.v20, paddingBottom: SPACING.v5},
-          ]}>
-          {item.content}
-        </Text>
+        {pagination(item)}
+        {/*<Text*/}
+        {/*  style={[*/}
+        {/*    STYLE.white_12,*/}
+        {/*    {paddingHorizontal: SPACING.v20, paddingBottom: SPACING.v5},*/}
+        {/*  ]}>*/}
+        {/*  {item.content}*/}
+        {/*</Text>*/}
         <View style={HOME_STYLE.share_icons}>
           <TouchableItem>
             <Icon name={'thumb-up-outline'} color={COLOR.white} size={22} />
@@ -145,11 +176,22 @@ function HomeScreen({navigation}) {
             STYLE.padding_wrapper,
             {paddingBottom: SPACING.v20},
           ]}>
-          <FlatList data={DATA} renderItem={renderItem} />
+          {posts && posts.length > 0 ? (
+            <FlatList data={posts} renderItem={renderItem} />
+          ) : (
+            <Loader />
+          )}
         </ScrollView>
       </View>
     </ScreenContainer>
   );
 }
 
-export default HomeScreen;
+export function mapStateToProps(state) {
+  return {
+    user: state.userProfile.user,
+    posts: state.allUsersPost.data,
+  };
+}
+
+export default connect(mapStateToProps, null)(HomeScreen);

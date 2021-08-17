@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {HEIGHT, SPACING, COLOR, FONTS, FONT_SIZE} from '../../constants';
+import {HEIGHT, SPACING, COLOR, FONTS, FONT_SIZE, DIMENSIONS} from '../../constants';
 
 export const UPLOAD_STYLE = StyleSheet.create({
   padding: {
@@ -28,8 +28,8 @@ export const UPLOAD_STYLE = StyleSheet.create({
     marginVertical: SPACING.v5,
   },
   image: {
-    width: '100%',
-    height: HEIGHT.h150,
+    width: DIMENSIONS.WINDOW_WIDTH / 4,
+    height: SPACING.v100,
     marginTop: SPACING.v15,
     resizeMode: 'cover',
   },
