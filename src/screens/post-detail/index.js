@@ -6,7 +6,7 @@ import {COLOR, DIMENSIONS, SPACING} from '../../constants';
 import {NavigationHeader} from '../../components';
 
 function PostDetailScreen({navigation, route}) {
-  console.log('route is', route);
+  console.log('route is', route.params);
   return (
     <ScreenContainer>
       <NavigationHeader navigation={navigation} />
@@ -26,7 +26,9 @@ function PostDetailScreen({navigation, route}) {
                   STYLE.x_small_white,
                   {paddingLeft: SPACING.v15, marginTop: 0},
                 ]}>
-                Ammy Jackson
+                {route.params.userData.user.name
+                  ? route.params.userData.user.name
+                  : ''}
               </Text>
             </View>
           </View>
@@ -39,8 +41,9 @@ function PostDetailScreen({navigation, route}) {
             style={STYLE.detail_image}
           />
           <Text style={[STYLE.x_small_white, {marginTop: SPACING.v20}]}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.{' '}
+            {route.params.userData.description
+              ? route.params.userData.description
+              : ''}
           </Text>
         </View>
       </ScrollView>

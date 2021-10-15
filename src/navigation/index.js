@@ -19,6 +19,8 @@ import UploadScreen from '../screens/upload';
 import UserProfileScreen from '../screens/user-profile';
 import PostDetailScreen from '../screens/post-detail';
 import EditProfileScreen from '../screens/edit-profile';
+import UserDetailScreen from '../screens/user-detail';
+import EditPostScreen from '../screens/edit-post';
 
 //common files
 import {COLOR, FONT_SIZE, NAVIGATION_REF, SPACING} from '../constants';
@@ -115,6 +117,8 @@ function AppNavigator() {
             name={Routes.EditProfile}
             component={EditProfileScreen}
           />
+          <Stack.Screen name={Routes.UserDetail} component={UserDetailScreen} />
+          <Stack.Screen name={Routes.EditPost} component={EditPostScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

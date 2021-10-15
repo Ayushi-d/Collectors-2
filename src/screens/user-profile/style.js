@@ -15,7 +15,7 @@ export const PROFILE_STYLE = StyleSheet.create({
   post_image: {
     width: WIDTH.w100,
     height: DIMENSIONS.WINDOW_HEIGHT / 6,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: SPACING.v8,
   },
 });

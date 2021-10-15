@@ -86,7 +86,7 @@ export const HEIGHT = {
   h230: DIMENSIONS.WINDOW_HEIGHT / 2.7,
 };
 
-export const BASE_URL = 'http://3.15.188.149:9500/api/v1';
+export const BASE_URL = 'http://3.138.124.101:9500/api/v1';
 export const ACCESS_TOKEN = 'token';
 export const APP_REFRESH_TOKEN = 'refresh';
 export const NAVIGATION_REF = React.createRef();

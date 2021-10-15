@@ -4,7 +4,7 @@ import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
-import {ACCESS_TOKEN, FONTS, SPACING} from '../../constants';
+import {ACCESS_TOKEN, COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
 import {NavigationHeader} from '../../components';
 import {PROFILE_STYLE} from './style';
 import {connect, useDispatch} from 'react-redux';
@@ -13,7 +13,6 @@ import {getUserProfile} from '../../actions';
 
 function UserProfileScreen({navigation, user}) {
   const dispatch = useDispatch();
-  const DATA = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}];
 
   useEffect(() => {
     (async function f() {
@@ -22,20 +21,50 @@ function UserProfileScreen({navigation, user}) {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log('user is', user);
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   function renderItem({item, index}) {
     return (
       <TouchableItem
-        onPress={() => navigateTo(navigation, Routes.PostDetail)}
+        onPress={() =>
+          navigateTo(navigation, Routes.UserDetail, {userData: item})
+        }
         key={index}
-        style={{paddingLeft: SPACING.v15}}>
-        <Image
-          source={require('../../assets/png/user.png')}
-          style={PROFILE_STYLE.post_image}
-        />
+        style={{paddingLeft: SPACING.v15, paddingVertical: SPACING.v10}}>
+        {item.images.length > 1 ? (
+          <View>
+            <Image
+              source={{uri: item.images[0]}}
+              style={PROFILE_STYLE.post_image}
+            />
+            <View
+              style={{
+                position: 'absolute',
+                right: 0,
+                width: SPACING.v15,
+                height: SPACING.v15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: SPACING.v7,
+                backgroundColor: COLOR.white,
+                opacity: 0.5,
+              }}>
+              <Text
+                style={{
+                  fontSize: 8,
+                  color: COLOR.black,
+                  fontFamily: FONTS.montSemiBold,
+                }}>
+                {item.images.length}
+              </Text>
+            </View>
+          </View>
+        ) : (
+          <Image
+            source={{uri: item.images[0]}}
+            style={PROFILE_STYLE.post_image}
+          />
+        )}
       </TouchableItem>
     );
   }
@@ -60,17 +89,17 @@ function UserProfileScreen({navigation, user}) {
               {/*</Text>*/}
               <View style={[STYLE.margin_auto, {flexDirection: 'row'}]}>
                 <View>
-                  <Text style={[STYLE.white_12, {textAlign: 'center'}]}>6</Text>
+                  <Text style={[STYLE.white_12, {textAlign: 'center'}]}>
+                    {user.uploads.length}
+                  </Text>
                   <Text style={STYLE.white_12}>Posts</Text>
                 </View>
                 <View style={{marginHorizontal: SPACING.v15}}>
-                  <Text style={[STYLE.white_12, {textAlign: 'center'}]}>6</Text>
+                  <Text style={[STYLE.white_12, {textAlign: 'center'}]}>0</Text>
                   <Text style={STYLE.white_12}>followers</Text>
                 </View>
                 <View>
-                  <Text style={[STYLE.white_12, {textAlign: 'center'}]}>
-                    12
-                  </Text>
+                  <Text style={[STYLE.white_12, {textAlign: 'center'}]}>0</Text>
                   <Text style={STYLE.white_12}>following</Text>
                 </View>
               </View>
@@ -82,13 +111,12 @@ function UserProfileScreen({navigation, user}) {
                     STYLE.white_16,
                     {marginTop: 0, fontFamily: FONTS.montSemiBold},
                   ]}>
-                  {user ? user.name : 'Ammy'}
+                  {user ? user.name : ''}
                 </Text>
                 <Text style={STYLE.white_12}>
                   {user ? user.email : 'lorem email'}
                 </Text>
-                <Text style={STYLE.white_12}>User Bio</Text>
-                <Text style={STYLE.white_12}>Dummy data</Text>
+                <Text style={STYLE.white_12}>{user.userBio ? user.userBio : ''}</Text>
               </View>
               {/*<View style={[STYLE.margin_auto, {flexDirection: 'row',}]}>*/}
               {/*  <View>*/}
@@ -115,7 +143,7 @@ function UserProfileScreen({navigation, user}) {
           </View>
           <View style={PROFILE_STYLE.border} />
           <FlatList
-            data={DATA}
+            data={user?.uploads}
             renderItem={renderItem}
             numColumns={3}
             keyExtractor={(item, index) => `${item.id}`}

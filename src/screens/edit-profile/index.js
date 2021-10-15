@@ -7,7 +7,7 @@ import {Routes} from '../../navigation/routes';
 import {ACCESS_TOKEN, APP_REFRESH_TOKEN, SPACING} from '../../constants';
 import {InputText, NavigationHeader} from '../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserProfile} from '../../actions';
+import {getUserProfile, updateUserProfile} from '../../actions';
 import {connect, useDispatch} from 'react-redux';
 
 function EditProfileScreen({navigation, user}) {
@@ -15,6 +15,7 @@ function EditProfileScreen({navigation, user}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('lorem');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async function f() {
@@ -27,6 +28,7 @@ function EditProfileScreen({navigation, user}) {
     console.log('user in edit profile', user);
     setName(user.name);
     setEmail(user.email);
+    setBio(user.userBio);
   }, [user]);
 
   async function logoutUser() {
@@ -36,7 +38,19 @@ function EditProfileScreen({navigation, user}) {
   }
 
   async function editUserProfile() {
-
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+    setLoading(true);
+    updateUserProfile(token, name, bio, 'APP_USER').then(async res => {
+      console.log('update user profile', res);
+      setLoading(false);
+      if (res.success) {
+        alert(res.message);
+        await dispatch(getUserProfile(token));
+        navigateTo(navigation, Routes.UserProfile);
+      } else {
+        alert(res.message);
+      }
+    });
   }
   return (
     <ScreenContainer>
@@ -55,7 +69,8 @@ function EditProfileScreen({navigation, user}) {
           <LoginButton
             title={'Save'}
             style={STYLE.button_top_margin}
-            onPress={() => navigateTo(navigation, Routes.UserProfile)}
+            onPress={editUserProfile}
+            isLoading={loading}
           />
           <LoginButton
             title={'Logout'}

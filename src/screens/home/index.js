@@ -25,26 +25,17 @@ function HomeScreen({navigation, user, posts}) {
   const dispatch = useDispatch();
   console.log('home profile is', user);
   const [activeSlide, setActiveSlide] = useState(0);
-  const CarouselData = [
-    {
-      id: 1,
-      img: require('../../assets/jpg/user1.jpg'),
-    },
-    {
-      id: 2,
-      img: require('../../assets/png/user.png'),
-    },
-    {
-      id: 3,
-      img: require('../../assets/jpg/user1.jpg'),
-    },
-  ];
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-  function renderCarouselItem({item, index}) {
+  function renderCarouselItem({item, index}, index1, newItem) {
     return (
       <TouchableItem
         onPress={() =>
-          navigateTo(navigation, Routes.PostDetail, {imageUri: item})
+          navigateTo(navigation, Routes.PostDetail, {
+            imageUri: item,
+            userData: newItem,
+          })
         }
         style={[STYLE.justify_center, {width: '100%'}]}
         key={index}>
@@ -111,6 +102,13 @@ function HomeScreen({navigation, user, posts}) {
     );
   }
 
+  function setData(item) {
+    setTitle(item.user.name);
+    setDescription(item.description);
+  }
+
+  console.log('title, ss', title, description);
+
   function renderItem({item}) {
     return (
       <View style={HOME_STYLE.black_background}>
@@ -132,7 +130,9 @@ function HomeScreen({navigation, user, posts}) {
         </View>
         <Carousel
           data={item.images}
-          renderItem={renderCarouselItem}
+          renderItem={(carItem, index) =>
+            renderCarouselItem(carItem, index, item)
+          }
           sliderWidth={DIMENSIONS.WINDOW_WIDTH}
           sliderHeight={DIMENSIONS.WINDOW_HEIGHT}
           itemWidth={DIMENSIONS.WINDOW_WIDTH}
@@ -169,7 +169,7 @@ function HomeScreen({navigation, user, posts}) {
 
   return (
     <ScreenContainer>
-      <NavigationHeader navigation={navigation} />
+      <NavigationHeader showSearch={true} navigation={navigation} />
       <View style={STYLE.background}>
         <ScrollView
           contentContainerStyle={[

@@ -11,4 +11,6 @@ export const Routes = {
   UserProfile: 'UserProfile',
   PostDetail: 'PostDetail',
   EditProfile: 'EditProfile',
+  UserDetail: 'UserDetail',
+  EditPost: 'EditPost',
 };

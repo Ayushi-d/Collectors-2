@@ -20,7 +20,9 @@ export function NavigationHeader(props) {
       {/*<Text style={[STYLE.white_14, {fontFamily: FONTS.montSemiBold}]}>*/}
       {/*  {'Collectors Edition'.toUpperCase()}*/}
       {/*</Text>*/}
-      <Icon name={'magnify'} color={COLOR.white} size={25} />
+        {props.showSearch &&
+        <Icon name={'magnify'} color={COLOR.white} size={25} />
+        }
     </View>
   );
 }

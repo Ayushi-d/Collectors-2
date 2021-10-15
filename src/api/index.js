@@ -58,6 +58,8 @@ export default {
     }
   },
   async postToken(appToken, url, body) {
+    console.log('body and token', body, appToken);
+    console.log('complete url',`${BASE_URL}/${url}` )
     const refreshed_token = await validateToken(appToken);
     try {
       let res = await axios.post(`${BASE_URL}/${url}`, JSON.stringify(body), {
@@ -80,6 +82,8 @@ export default {
   },
   async putToken(appToken, url, body) {
     console.log('body in put token', body);
+    console.log('url', `${BASE_URL}/${url}`);
+    console.log('appToken', appToken);
     const refreshed_token = await validateToken(appToken);
     try {
       let res = await axios.put(`${BASE_URL}/${url}`, JSON.stringify(body), {
@@ -87,6 +91,32 @@ export default {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           Authorization: `Bearer ${refreshed_token}`,
+        },
+      });
+      return res.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        await tokenExpire();
+      }
+      if (error.response.status === 500) {
+      }
+      return error;
+    }
+  },
+  async deleteToken(appToken, url, id) {
+    console.log('body in put token', id);
+    console.log('url', `${BASE_URL}/${url}`);
+    console.log('appToken', appToken);
+    const refreshed_token = await validateToken(appToken);
+    try {
+      let res = await axios.delete(`${BASE_URL}/${url}`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${refreshed_token}`,
+        },
+        data: {
+          id: id,
         },
       });
       return res.data;

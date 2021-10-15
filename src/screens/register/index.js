@@ -38,7 +38,7 @@ function RegisterScreen({navigation}) {
     if (!name) {
       alert('Name is required');
     } else if (!email) {
-      alert('Name is required');
+      alert('Email is required');
     } else if (!re.test(email)) {
       alert('Please enter valid email');
     } else if (!password) {

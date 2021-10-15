@@ -7,6 +7,7 @@ import {
   Image,
   View,
   Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -37,6 +38,7 @@ let mediaOptions = {
   quality: 1,
 };
 function UploadScreen({navigation}) {
+  const dropDownRef = React.useRef();
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -215,6 +217,7 @@ function UploadScreen({navigation}) {
         alert('Images upload successfully');
         await dispatch(getAllPost(token));
         await navigateTo(navigation, Routes.Home);
+        await dispatch(getUserProfile(token));
         await setName('');
         await setValue(null);
         await setSubValue(null);
@@ -231,168 +234,171 @@ function UploadScreen({navigation}) {
   }
 
   return (
-    <ScreenContainer>
-      <NavigationHeader navigation={navigation} />
-      <View style={STYLE.background}>
-        <ScrollView
-          nestedScrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={UPLOAD_STYLE.padding}>
-          <Text style={[STYLE.large_white, {textAlign: 'center'}]}>
-            Add a collectible
-          </Text>
-          <Text
-            style={[
-              STYLE.white_16,
-              {
-                textAlign: 'center',
-                marginTop: SPACING.v5,
-                marginBottom: SPACING.v10,
-              },
-            ]}>
-            Post a Collectible to the Collectors Community
-          </Text>
-          {imageSource && imageSource.length < 8 && (
-            <View>
-              <TouchableItem
-                onPress={openAlert}
-                style={UPLOAD_STYLE.plus_button}>
-                <Icon name={'plus'} size={30} color={COLOR.white} />
-              </TouchableItem>
-              <Text
-                style={[
-                  STYLE.white_14,
-                  {textAlign: 'center', paddingVertical: SPACING.v10},
-                ]}>
-                Add Image
-              </Text>
-            </View>
-          )}
-          {imageSource && imageSource.length > 0 && (
-            <View style={{flexDirection: 'row', flex: 1, flexWrap: 'wrap'}}>
-              {imageSource.map((item, index) => {
-                return (
-                  <View
-                    style={{flexDirection: 'row', paddingLeft: SPACING.v15}}>
-                    <Image
-                      source={{uri: item.uri}}
-                      style={UPLOAD_STYLE.image}
-                    />
-                    <TouchableItem
-                      onPress={() => deleteImage(index)}
-                      style={{position: 'absolute', top: 3, right: -15}}>
-                      <Icon
-                        name={'close-circle-outline'}
-                        color={'red'}
-                        size={20}
+    <TouchableWithoutFeedback onPress={() => dropDownRef.current?.close()}>
+      <ScreenContainer>
+        <NavigationHeader navigation={navigation} />
+        <View style={STYLE.background}>
+          <ScrollView
+            nestedScrollEnabled={true}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={UPLOAD_STYLE.padding}>
+            <Text style={[STYLE.large_white, {textAlign: 'center'}]}>
+              Add a collectible
+            </Text>
+            <Text
+              style={[
+                STYLE.white_16,
+                {
+                  textAlign: 'center',
+                  marginTop: SPACING.v5,
+                  marginBottom: SPACING.v10,
+                },
+              ]}>
+              Post a Collectible to the Collectors Community
+            </Text>
+            {imageSource && imageSource.length < 8 && (
+              <View>
+                <TouchableItem
+                  onPress={openAlert}
+                  style={UPLOAD_STYLE.plus_button}>
+                  <Icon name={'plus'} size={30} color={COLOR.white} />
+                </TouchableItem>
+                <Text
+                  style={[
+                    STYLE.white_14,
+                    {textAlign: 'center', paddingVertical: SPACING.v10},
+                  ]}>
+                  Add Image
+                </Text>
+              </View>
+            )}
+            {imageSource && imageSource.length > 0 && (
+              <View style={{flexDirection: 'row', flex: 1, flexWrap: 'wrap'}}>
+                {imageSource.map((item, index) => {
+                  return (
+                    <View
+                      style={{flexDirection: 'row', paddingLeft: SPACING.v15}}>
+                      <Image
+                        source={{uri: item.uri}}
+                        style={UPLOAD_STYLE.image}
                       />
-                    </TouchableItem>
-                  </View>
-                );
-              })}
-            </View>
-          )}
-          <TextInput
-            placeholder={'Collectible Name'}
-            placeholderTextColor={COLOR.white}
-            style={UPLOAD_STYLE.name_input}
-            value={name}
-            onChangeText={setName}
-          />
-          <DropDownPicker
-            showArrowIcon={false}
-            style={UPLOAD_STYLE.dropdown}
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            placeholder={'Select Category'}
-            setValue={setValue}
-            setItems={setItems}
-            zIndex={2000}
-            zIndexReverse={1000}
-            dropDownContainerStyle={{
-              backgroundColor: COLOR.black,
-              color: COLOR.white,
-            }}
-            textStyle={{
-              fontSize: FONT_SIZE.f14,
-              color: COLOR.white,
-              fontFamily: FONTS.montRegular,
-            }}
-          />
-          {value === 'others' ? (
-            <View>
-              {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10, fontFamily: FONTS.montRegular, paddingLeft: SPACING.v10}]}>*/}
-              {/*  Enter Category*/}
-              {/*</Text>*/}
-              <TextInput
-                placeholder={'Write Something'}
-                placeholderTextColor={COLOR.white}
-                multiline={true}
-                style={[
-                  UPLOAD_STYLE.input,
-                  {
-                    height: HEIGHT.h150,
-                    textAlignVertical: 'top',
+                      <TouchableItem
+                        onPress={() => deleteImage(index)}
+                        style={{position: 'absolute', top: 3, right: -15}}>
+                        <Icon
+                          name={'close-circle-outline'}
+                          color={'red'}
+                          size={20}
+                        />
+                      </TouchableItem>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+            <TextInput
+              placeholder={'Collectible Name'}
+              placeholderTextColor={COLOR.white}
+              style={UPLOAD_STYLE.name_input}
+              value={name}
+              onChangeText={setName}
+            />
+            <DropDownPicker
+              ref={dropDownRef}
+              showArrowIcon={false}
+              style={UPLOAD_STYLE.dropdown}
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              placeholder={'Select Category'}
+              setValue={setValue}
+              setItems={setItems}
+              zIndex={2000}
+              zIndexReverse={1000}
+              dropDownContainerStyle={{
+                backgroundColor: COLOR.black,
+                color: COLOR.white,
+              }}
+              textStyle={{
+                fontSize: FONT_SIZE.f14,
+                color: COLOR.white,
+                fontFamily: FONTS.montRegular,
+              }}
+            />
+            {value === 'others' ? (
+              <View>
+                {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10, fontFamily: FONTS.montRegular, paddingLeft: SPACING.v10}]}>*/}
+                {/*  Enter Category*/}
+                {/*</Text>*/}
+                <TextInput
+                  placeholder={'Write Something'}
+                  placeholderTextColor={COLOR.white}
+                  multiline={true}
+                  style={[
+                    UPLOAD_STYLE.input,
+                    {
+                      height: HEIGHT.h150,
+                      textAlignVertical: 'top',
+                      fontFamily: FONTS.montRegular,
+                    },
+                  ]}
+                />
+              </View>
+            ) : (
+              <View>
+                <DropDownPicker
+                  style={UPLOAD_STYLE.dropdown}
+                  open={subOpen}
+                  showArrowIcon={false}
+                  value={subValue}
+                  placeholder={'Select Sub-Category'}
+                  items={subCategory}
+                  setOpen={setSubOpen}
+                  setValue={setSubValue}
+                  setItems={setSubCategory}
+                  zIndex={1000}
+                  zIndexReverse={2000}
+                  dropDownContainerStyle={{
+                    backgroundColor: COLOR.black,
+                    color: COLOR.white,
+                  }}
+                  textStyle={{
+                    fontSize: FONT_SIZE.f14,
+                    color: COLOR.white,
                     fontFamily: FONTS.montRegular,
-                  },
-                ]}
-              />
-            </View>
-          ) : (
-            <View>
-              <DropDownPicker
-                style={UPLOAD_STYLE.dropdown}
-                open={subOpen}
-                showArrowIcon={false}
-                value={subValue}
-                placeholder={'Select Sub-Category'}
-                items={subCategory}
-                setOpen={setSubOpen}
-                setValue={setSubValue}
-                setItems={setSubCategory}
-                zIndex={1000}
-                zIndexReverse={2000}
-                dropDownContainerStyle={{
-                  backgroundColor: COLOR.black,
-                  color: COLOR.white,
-                }}
-                textStyle={{
-                  fontSize: FONT_SIZE.f14,
-                  color: COLOR.white,
-                  fontFamily: FONTS.montRegular,
-                }}
-              />
-            </View>
-          )}
-          <TextInput
-            placeholder={'Description'}
-            placeholderTextColor={COLOR.white}
-            multiline={true}
-            value={description}
-            onChangeText={setDescription}
-            onContentSizeChange={event => {
-              setHeight(event.nativeEvent.contentSize.height);
-            }}
-            style={[
-              UPLOAD_STYLE.input,
-              {
-                textAlignVertical: 'top',
-                height: Math.max(35, height),
-              },
-            ]}
-          />
-          <LoginButton
-            onPress={uploadImages}
-            style={STYLE.button_top_margin}
-            title={'Upload'}
-            isLoading={imageUpload}
-            disable={imageUpload}
-          />
-        </ScrollView>
-      </View>
-    </ScreenContainer>
+                  }}
+                />
+              </View>
+            )}
+            <TextInput
+              placeholder={'Description'}
+              placeholderTextColor={COLOR.white}
+              multiline={true}
+              value={description}
+              onChangeText={setDescription}
+              onContentSizeChange={event => {
+                setHeight(event.nativeEvent.contentSize.height);
+              }}
+              style={[
+                UPLOAD_STYLE.input,
+                {
+                  textAlignVertical: 'top',
+                  height: Math.max(35, height),
+                },
+              ]}
+            />
+            <LoginButton
+              onPress={uploadImages}
+              style={STYLE.button_top_margin}
+              title={'Upload'}
+              isLoading={imageUpload}
+              disable={imageUpload}
+            />
+          </ScrollView>
+        </View>
+      </ScreenContainer>
+    </TouchableWithoutFeedback>
   );
 }
 

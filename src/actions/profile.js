@@ -41,3 +41,11 @@ export const getAllPost = token => async dispatch => {
     });
   }
 };
+
+export const updateUserProfile = (appToken, name, userBio, appType) => {
+  return api.putToken(appToken, 'user/update-profile?', {
+    name,
+    userBio,
+    appType,
+  });
+};

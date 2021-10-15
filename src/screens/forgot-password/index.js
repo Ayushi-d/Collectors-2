@@ -67,7 +67,6 @@ function ForgotPasswordScreen({navigation}) {
             account
           </Text>
           <InputText label={'Email'} value={email} onChange={setEmail} />
-
           <LoginButton
             onPress={forgotPassword}
             title={'Send otp'.toUpperCase()}
