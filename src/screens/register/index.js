@@ -56,7 +56,10 @@ function RegisterScreen({navigation}) {
           if (response.success) {
             AsyncStorage.setItem(ACCESS_TOKEN, response.data.token);
             AsyncStorage.setItem(APP_REFRESH_TOKEN, response.data.refreshToken);
-            navigateTo(navigation, Routes.Otp, {screen: 'signup'});
+            navigateTo(navigation, Routes.Otp, {
+              screen: 'signup',
+              userEmail: email,
+            });
           } else {
             alert(response.message);
           }

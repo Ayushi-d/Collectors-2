@@ -26,16 +26,19 @@ function EditPostScreen({navigation, route}) {
   async function updatePost() {
     const token = await AsyncStorage.getItem(ACCESS_TOKEN);
     setLoading(true);
-    editImagePost(token, name, images).then(async res => {
-      console.log('response success is', res);
-      setLoading(false);
-      if (res.success) {
-        alert('Your Post edited successfully');
-        await dispatch(getAllPost(token));
-        await dispatch(getUserProfile(token));
-        await navigateTo(navigation, Routes.Home);
-      }
-    });
+    console.log('route params id', route.params.userData.id);
+    editImagePost(token, route.params.userData.id, name, images).then(
+      async res => {
+        console.log('response success is', res);
+        setLoading(false);
+        if (res.success) {
+          alert('Your Post edited successfully');
+          await dispatch(getAllPost(token));
+          await dispatch(getUserProfile(token));
+          await navigateTo(navigation, Routes.Home);
+        }
+      },
+    );
   }
 
   function deleteImage(index) {

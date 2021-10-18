@@ -7,8 +7,9 @@ export const uploadImagePost = (appToken, title, images) => {
   });
 };
 
-export const editImagePost = (appToken, title, images) => {
+export const editImagePost = (appToken, id, title, images) => {
   return api.postToken(appToken, 'user/edit-post', {
+    id,
     title,
     images,
   });

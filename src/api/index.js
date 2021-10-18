@@ -130,6 +130,8 @@ export default {
     }
   },
   async put(url, body) {
+     console.log('body is',body);
+     console.log('complete url is', `${BASE_URL}/${url}`);
     try {
       let res = await axiosInstance.put(
         `${BASE_URL}/${url}`,
