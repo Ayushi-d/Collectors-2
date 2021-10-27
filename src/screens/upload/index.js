@@ -46,19 +46,21 @@ function UploadScreen({navigation}) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    {label: 'cat1', value: 'bbb'},
-    {label: 'cat2', value: 'mkmk'},
-    {label: 'hdshhf', value: 'fbjsfjbsd'},
-    {label: 'ddsjh', value: 'fsfgjh'},
-    {label: 'Others', value: 'others'},
+    {label: 'Books', value: 'books'},
+    {label: 'Breweriana', value: 'breweriana'},
+    {label: 'Trading Cards', value: 'trading_cards'},
+    {label: 'Comics', value: 'comics'},
+    {label: 'Numismatics', value: 'numismatics'},
+    {label: 'Philately', value: 'philately'},
+    {label: 'Electronics', value: 'electronics'},
+    {label: 'Lamps', value: 'lamps'},
+    {label: 'Movies', value: 'movies'},
+    {label: 'Music', value: 'music'},
   ]);
   const [subOpen, setSubOpen] = useState(false);
   const [imageUpload, setImageUploading] = useState(false);
   const [subValue, setSubValue] = useState(null);
-  const [subCategory, setSubCategory] = useState([
-    {label: 'abc', value: 'absd'},
-    {label: 'cdf', value: 'bdcdsbjc'},
-  ]);
+  const [subCategory, setSubCategory] = useState([]);
   const [imageSource, setImageSource] = useState([]);
   const [myArray, setMyArray] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
@@ -210,7 +212,14 @@ function UploadScreen({navigation}) {
     console.log('images aray is', imagesArray);
     const token = await AsyncStorage.getItem(ACCESS_TOKEN);
     setImageUploading(true);
-    uploadImagePost(token, name, imagesArray).then(async res => {
+    uploadImagePost(
+      token,
+      name,
+      value,
+      subValue,
+      description,
+      imagesArray,
+    ).then(async res => {
       console.log('response of list', res);
       setImageUploading(false);
       if (res.success) {
@@ -231,6 +240,128 @@ function UploadScreen({navigation}) {
   function deleteImage(index) {
     imageSource.splice(index, 1);
     setImageSource([...imageSource]);
+  }
+
+  function changeSubCategoryValue(val) {
+    if (val === 'books') {
+      setSubCategory([
+        {
+          label: 'Crime',
+          value: 'crime',
+        },
+        {
+          label: 'Fable',
+          value: 'fable',
+        },
+        {
+          label: 'Fantasy',
+          value: 'fantasy',
+        },
+        {
+          label: 'History',
+          value: 'history',
+        },
+      ]);
+    } else if (val === 'breweriana') {
+      setSubCategory([
+        {
+          label: 'Beer Packaging',
+          value: 'beer_packaging',
+        },
+        {
+          label: 'Beer Bottles',
+          value: 'beer_bottles',
+        },
+      ]);
+    } else if (val === 'trading_cards') {
+      setSubCategory([
+        {
+          label: 'Game Cards',
+          value: 'game_cards',
+        },
+        {
+          label: 'Sports Cards',
+          value: 'sports_cards',
+        },
+      ]);
+    } else if (val === 'comics') {
+      setSubCategory([
+        {
+          label: 'Anime & Manga',
+          value: 'anime_manga',
+        },
+        {
+          label: 'Superhero Comics',
+          value: 'superhero_comics',
+        },
+      ]);
+    } else if (val === 'numismatics') {
+      setSubCategory([
+        {
+          label: 'Coins',
+          value: 'coins',
+        },
+        {
+          label: 'Bills',
+          value: 'bills',
+        },
+      ]);
+    } else if (val === 'philately') {
+      setSubCategory([
+        {
+          label: 'Stamps',
+          value: 'stamps',
+        },
+        {
+          label: 'Postal Envelopes',
+          value: 'postal_envelopes',
+        },
+      ]);
+    } else if (val === 'electronics') {
+      setSubCategory([
+        {
+          label: 'Consumer Electronics',
+          value: 'consumer_electronics',
+        },
+        {
+          label: 'Gadgets',
+          value: 'gadgets',
+        },
+      ]);
+    } else if (val === 'lamps') {
+      setSubCategory([
+        {
+          label: 'Desk Lamps',
+          value: 'desk_lamps',
+        },
+        {
+          label: 'Floor Lamps',
+          value: 'floor_lamps',
+        },
+      ]);
+    } else if (val === 'movies') {
+      setSubCategory([
+        {
+          label: 'Discs',
+          value: 'discs',
+        },
+        {
+          label: 'VHS',
+          value: 'vhs',
+        },
+      ]);
+    } else if (val === 'music') {
+      setSubCategory([
+        {
+          label: 'Cassette Taps',
+          value: 'cassette_taps',
+        },
+        {
+          label: 'Discs',
+          value: 'discs',
+        },
+      ]);
+    }
   }
 
   return (
@@ -314,6 +445,7 @@ function UploadScreen({navigation}) {
               placeholder={'Select Category'}
               setValue={setValue}
               setItems={setItems}
+              onChangeValue={val => changeSubCategoryValue(val)}
               zIndex={2000}
               zIndexReverse={1000}
               dropDownContainerStyle={{

@@ -4,7 +4,8 @@ import {SPLASH_STYLE} from './style';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 import {STYLE} from '../../common';
-import {COLOR} from '../../constants';
+import {ACCESS_TOKEN, COLOR} from '../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SplashScreen({navigation}) {
   useEffect(() => {
@@ -13,9 +14,14 @@ function SplashScreen({navigation}) {
     })();
   }, []);
 
-  function goToLogin() {
-    setTimeout(() => {
-      navigateTo(navigation, Routes.GetStarted, {}, true);
+  async function goToLogin() {
+    setTimeout(async () => {
+      const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+      if (token) {
+        navigateTo(navigation, Routes.Home, {}, true);
+      } else {
+        navigateTo(navigation, Routes.GetStarted, {}, true);
+      }
     }, 3000);
   }
 
