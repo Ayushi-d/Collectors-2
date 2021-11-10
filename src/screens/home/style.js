@@ -15,7 +15,7 @@ export const HOME_STYLE = StyleSheet.create({
   },
   user_image: {
     height: DIMENSIONS.WINDOW_HEIGHT / 2.9,
-    width: '80%',
+    width: 300,
     marginRight: SPACING.v40,
     resizeMode: 'cover',
     marginBottom: SPACING.v30,

@@ -37,12 +37,14 @@ function HomeScreen({navigation, user, posts}) {
             userData: newItem,
           })
         }
-        style={[STYLE.justify_center, {width: '100%'}]}
+        style={[STYLE.justify_center]}
         key={index}>
         <Image
-          blurRadius={0}
+          // blurRadius={0}
           source={{uri: item}}
+          resizeMethod={'scale'}
           style={HOME_STYLE.user_image}
+          // style={{width: 350, height: 200, borderRadius: 10, resizeMode: 'contain'}}
         />
       </TouchableItem>
     );

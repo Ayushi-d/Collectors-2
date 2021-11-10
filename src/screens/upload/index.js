@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
   Text,
@@ -26,18 +26,24 @@ import {UPLOAD_STYLE} from './style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {navigateTo, uploadFileToS3} from '../../helpers';
 import {Routes} from '../../navigation/routes';
-import {getAllPost, getUserProfile, uploadImagePost} from '../../actions';
+import {
+  getAllPost,
+  getCategories,
+  getSubCategory,
+  getUserProfile,
+  uploadImagePost,
+} from '../../actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {connect, useDispatch} from 'react-redux';
 import ImageResizer from 'react-native-image-resizer';
 
 let mediaOptions = {
   mediaType: 'photo',
-  maxWidth: 300,
-  maxHeight: 550,
+  maxWidth: 2000,
+  maxHeight: 2000,
   quality: 1,
 };
-function UploadScreen({navigation}) {
+function UploadScreen({navigation, categories, subCategories}) {
   const dropDownRef = React.useRef();
   const dispatch = useDispatch();
   const [name, setName] = useState('');
@@ -56,6 +62,7 @@ function UploadScreen({navigation}) {
     {label: 'Lamps', value: 'lamps'},
     {label: 'Movies', value: 'movies'},
     {label: 'Music', value: 'music'},
+    {label: 'Others', value: 'others'},
   ]);
   const [subOpen, setSubOpen] = useState(false);
   const [imageUpload, setImageUploading] = useState(false);
@@ -64,6 +71,39 @@ function UploadScreen({navigation}) {
   const [imageSource, setImageSource] = useState([]);
   const [myArray, setMyArray] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
+
+  useEffect(() => {
+    (async function f() {
+      const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+      console.log('token', token);
+      await dispatch(getCategories(token));
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      let catArray = [];
+      categories.map(item => {
+        catArray.push({
+          label: item.title,
+          value: item.id,
+        });
+        setItems(catArray);
+      });
+    }
+    if (subCategories.length > 0) {
+      let subArray = [];
+      subCategories.map(item => {
+        subArray.push({
+          label: item.title,
+          value: item.id,
+        });
+        setSubCategory(subArray);
+      });
+    }
+  }, [categories, subCategories]);
+
+
   function openAlert() {
     Alert.alert(
       'Take a picture',
@@ -79,27 +119,6 @@ function UploadScreen({navigation}) {
     );
   }
 
-  function resizeImage(res) {
-    return ImageResizer.createResizedImage(
-      res.uri,
-      res.width,
-      res.height,
-      'JPEG',
-      100,
-      res?.originalRotation || 0,
-      undefined,
-      false,
-      {},
-    )
-      .then(resizedImage => {
-        console.log('resizedImage', resizedImage);
-        return resizedImage;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
   function openGallery() {
     launchImageLibrary(mediaOptions, async response => {
       console.log('Response = ', response);
@@ -108,7 +127,8 @@ function UploadScreen({navigation}) {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorCode);
       } else {
-        let imageSize = await resizeImage(response.assets[0]);
+        let imageSize = response.assets[0];
+        // let imageSize = await resizeImage(response.assets[0]);
         console.log('image size is', imageSize);
         if (imageSize) {
           const name = `CE-${new Date().getTime()}.${
@@ -137,7 +157,8 @@ function UploadScreen({navigation}) {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorCode);
       } else {
-        let imageSize = await resizeImage(response.assets[0]);
+        let imageSize = response.assets[0];
+        // let imageSize = await resizeImage(response.assets[0]);
         if (imageSize) {
           const name = `CE-${new Date().getTime()}.${
             response.assets[0].type.split('/')[1]
@@ -230,6 +251,7 @@ function UploadScreen({navigation}) {
         await setName('');
         await setValue(null);
         await setSubValue(null);
+        await setSubCategory([]);
         await setDescription('');
         await setMyArray([]);
         await setImageSource([]);
@@ -242,126 +264,130 @@ function UploadScreen({navigation}) {
     setImageSource([...imageSource]);
   }
 
-  function changeSubCategoryValue(val) {
-    if (val === 'books') {
-      setSubCategory([
-        {
-          label: 'Crime',
-          value: 'crime',
-        },
-        {
-          label: 'Fable',
-          value: 'fable',
-        },
-        {
-          label: 'Fantasy',
-          value: 'fantasy',
-        },
-        {
-          label: 'History',
-          value: 'history',
-        },
-      ]);
-    } else if (val === 'breweriana') {
-      setSubCategory([
-        {
-          label: 'Beer Packaging',
-          value: 'beer_packaging',
-        },
-        {
-          label: 'Beer Bottles',
-          value: 'beer_bottles',
-        },
-      ]);
-    } else if (val === 'trading_cards') {
-      setSubCategory([
-        {
-          label: 'Game Cards',
-          value: 'game_cards',
-        },
-        {
-          label: 'Sports Cards',
-          value: 'sports_cards',
-        },
-      ]);
-    } else if (val === 'comics') {
-      setSubCategory([
-        {
-          label: 'Anime & Manga',
-          value: 'anime_manga',
-        },
-        {
-          label: 'Superhero Comics',
-          value: 'superhero_comics',
-        },
-      ]);
-    } else if (val === 'numismatics') {
-      setSubCategory([
-        {
-          label: 'Coins',
-          value: 'coins',
-        },
-        {
-          label: 'Bills',
-          value: 'bills',
-        },
-      ]);
-    } else if (val === 'philately') {
-      setSubCategory([
-        {
-          label: 'Stamps',
-          value: 'stamps',
-        },
-        {
-          label: 'Postal Envelopes',
-          value: 'postal_envelopes',
-        },
-      ]);
-    } else if (val === 'electronics') {
-      setSubCategory([
-        {
-          label: 'Consumer Electronics',
-          value: 'consumer_electronics',
-        },
-        {
-          label: 'Gadgets',
-          value: 'gadgets',
-        },
-      ]);
-    } else if (val === 'lamps') {
-      setSubCategory([
-        {
-          label: 'Desk Lamps',
-          value: 'desk_lamps',
-        },
-        {
-          label: 'Floor Lamps',
-          value: 'floor_lamps',
-        },
-      ]);
-    } else if (val === 'movies') {
-      setSubCategory([
-        {
-          label: 'Discs',
-          value: 'discs',
-        },
-        {
-          label: 'VHS',
-          value: 'vhs',
-        },
-      ]);
-    } else if (val === 'music') {
-      setSubCategory([
-        {
-          label: 'Cassette Taps',
-          value: 'cassette_taps',
-        },
-        {
-          label: 'Discs',
-          value: 'discs',
-        },
-      ]);
-    }
+  async function changeSubCategoryValue(val) {
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+    await dispatch(getSubCategory(token, val));
+    // if (val === 'books') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Crime',
+    //       value: 'crime',
+    //     },
+    //     {
+    //       label: 'Fable',
+    //       value: 'fable',
+    //     },
+    //     {
+    //       label: 'Fantasy',
+    //       value: 'fantasy',
+    //     },
+    //     {
+    //       label: 'History',
+    //       value: 'history',
+    //     },
+    //   ]);
+    // } else if (val === 'breweriana') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Beer Packaging',
+    //       value: 'beer_packaging',
+    //     },
+    //     {
+    //       label: 'Beer Bottles',
+    //       value: 'beer_bottles',
+    //     },
+    //   ]);
+    // } else if (val === 'trading_cards') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Game Cards',
+    //       value: 'game_cards',
+    //     },
+    //     {
+    //       label: 'Sports Cards',
+    //       value: 'sports_cards',
+    //     },
+    //   ]);
+    // } else if (val === 'comics') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Anime & Manga',
+    //       value: 'anime_manga',
+    //     },
+    //     {
+    //       label: 'Superhero Comics',
+    //       value: 'superhero_comics',
+    //     },
+    //   ]);
+    // } else if (val === 'numismatics') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Coins',
+    //       value: 'coins',
+    //     },
+    //     {
+    //       label: 'Bills',
+    //       value: 'bills',
+    //     },
+    //   ]);
+    // } else if (val === 'philately') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Stamps',
+    //       value: 'stamps',
+    //     },
+    //     {
+    //       label: 'Postal Envelopes',
+    //       value: 'postal_envelopes',
+    //     },
+    //   ]);
+    // } else if (val === 'electronics') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Consumer Electronics',
+    //       value: 'consumer_electronics',
+    //     },
+    //     {
+    //       label: 'Gadgets',
+    //       value: 'gadgets',
+    //     },
+    //   ]);
+    // } else if (val === 'lamps') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Desk Lamps',
+    //       value: 'desk_lamps',
+    //     },
+    //     {
+    //       label: 'Floor Lamps',
+    //       value: 'floor_lamps',
+    //     },
+    //   ]);
+    // } else if (val === 'movies') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Discs',
+    //       value: 'discs',
+    //     },
+    //     {
+    //       label: 'VHS',
+    //       value: 'vhs',
+    //     },
+    //   ]);
+    // } else if (val === 'music') {
+    //   setSubCategory([
+    //     {
+    //       label: 'Cassette Taps',
+    //       value: 'cassette_taps',
+    //     },
+    //     {
+    //       label: 'Discs',
+    //       value: 'discs',
+    //     },
+    //   ]);
+    // } else if (val === 'others') {
+    //   setSubValue('123');
+    // }
   }
 
   return (
@@ -371,6 +397,10 @@ function UploadScreen({navigation}) {
         <View style={STYLE.background}>
           <ScrollView
             nestedScrollEnabled={true}
+            listMode="SCROLLVIEW"
+            scrollViewProps={{
+              nestedScrollEnabled: true,
+            }}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={UPLOAD_STYLE.padding}>
             <Text style={[STYLE.large_white, {textAlign: 'center'}]}>
@@ -458,7 +488,7 @@ function UploadScreen({navigation}) {
                 fontFamily: FONTS.montRegular,
               }}
             />
-            {value === 'others' ? (
+            {value === 'Others' ? (
               <View>
                 {/*<Text style={[STYLE.button_text, {marginVertical: SPACING.v10, fontFamily: FONTS.montRegular, paddingLeft: SPACING.v10}]}>*/}
                 {/*  Enter Category*/}
@@ -537,6 +567,8 @@ function UploadScreen({navigation}) {
 export function mapStateToProps(state) {
   return {
     user: state.userProfile.user,
+    categories: state.catList.categoriesList,
+    subCategories: state.catList.subCategories,
   };
 }
 

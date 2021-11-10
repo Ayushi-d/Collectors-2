@@ -145,6 +145,7 @@ export default {
     }
   },
   async get(appToken, url, tokenRefresh = true) {
+    console.log('get token', `${BASE_URL}/${url}`);
     const refreshed_token = await validateToken(appToken, tokenRefresh);
     try {
       let res = await axios.get(`${BASE_URL}/${url}`, {

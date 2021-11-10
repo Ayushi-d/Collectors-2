@@ -140,7 +140,6 @@ function UserDetailScreen({navigation, route}) {
               userData: route.params.userData,
             })
           }
-          isLoading={loading}
         />
       </ScrollView>
     </ScreenContainer>
