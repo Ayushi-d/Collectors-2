@@ -7,7 +7,7 @@ import {
   Image,
   View,
   Platform,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback, TouchableOpacity,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -39,7 +39,7 @@ import ImageResizer from 'react-native-image-resizer';
 
 let mediaOptions = {
   mediaType: 'photo',
-  maxWidth: 2000,
+  maxWidth: 3000,
   maxHeight: 2000,
   quality: 1,
 };
@@ -52,17 +52,6 @@ function UploadScreen({navigation, categories, subCategories}) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    {label: 'Books', value: 'books'},
-    {label: 'Breweriana', value: 'breweriana'},
-    {label: 'Trading Cards', value: 'trading_cards'},
-    {label: 'Comics', value: 'comics'},
-    {label: 'Numismatics', value: 'numismatics'},
-    {label: 'Philately', value: 'philately'},
-    {label: 'Electronics', value: 'electronics'},
-    {label: 'Lamps', value: 'lamps'},
-    {label: 'Movies', value: 'movies'},
-    {label: 'Music', value: 'music'},
-    {label: 'Others', value: 'others'},
   ]);
   const [subOpen, setSubOpen] = useState(false);
   const [imageUpload, setImageUploading] = useState(false);
@@ -90,16 +79,19 @@ function UploadScreen({navigation, categories, subCategories}) {
         });
         setItems(catArray);
       });
-    }
-    if (subCategories.length > 0) {
-      let subArray = [];
-      subCategories.map(item => {
-        subArray.push({
-          label: item.title,
-          value: item.id,
+      if (subCategories.length > 0) {
+        let subArray = [];
+        subCategories.map(item => {
+          subArray.push({
+            label: item.title,
+            value: item.id,
+          });
+          setSubCategory(subArray);
         });
-        setSubCategory(subArray);
-      });
+      }
+    }
+    return () => {
+      categories, subCategories
     }
   }, [categories, subCategories]);
 
@@ -267,131 +259,16 @@ function UploadScreen({navigation, categories, subCategories}) {
   async function changeSubCategoryValue(val) {
     const token = await AsyncStorage.getItem(ACCESS_TOKEN);
     await dispatch(getSubCategory(token, val));
-    // if (val === 'books') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Crime',
-    //       value: 'crime',
-    //     },
-    //     {
-    //       label: 'Fable',
-    //       value: 'fable',
-    //     },
-    //     {
-    //       label: 'Fantasy',
-    //       value: 'fantasy',
-    //     },
-    //     {
-    //       label: 'History',
-    //       value: 'history',
-    //     },
-    //   ]);
-    // } else if (val === 'breweriana') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Beer Packaging',
-    //       value: 'beer_packaging',
-    //     },
-    //     {
-    //       label: 'Beer Bottles',
-    //       value: 'beer_bottles',
-    //     },
-    //   ]);
-    // } else if (val === 'trading_cards') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Game Cards',
-    //       value: 'game_cards',
-    //     },
-    //     {
-    //       label: 'Sports Cards',
-    //       value: 'sports_cards',
-    //     },
-    //   ]);
-    // } else if (val === 'comics') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Anime & Manga',
-    //       value: 'anime_manga',
-    //     },
-    //     {
-    //       label: 'Superhero Comics',
-    //       value: 'superhero_comics',
-    //     },
-    //   ]);
-    // } else if (val === 'numismatics') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Coins',
-    //       value: 'coins',
-    //     },
-    //     {
-    //       label: 'Bills',
-    //       value: 'bills',
-    //     },
-    //   ]);
-    // } else if (val === 'philately') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Stamps',
-    //       value: 'stamps',
-    //     },
-    //     {
-    //       label: 'Postal Envelopes',
-    //       value: 'postal_envelopes',
-    //     },
-    //   ]);
-    // } else if (val === 'electronics') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Consumer Electronics',
-    //       value: 'consumer_electronics',
-    //     },
-    //     {
-    //       label: 'Gadgets',
-    //       value: 'gadgets',
-    //     },
-    //   ]);
-    // } else if (val === 'lamps') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Desk Lamps',
-    //       value: 'desk_lamps',
-    //     },
-    //     {
-    //       label: 'Floor Lamps',
-    //       value: 'floor_lamps',
-    //     },
-    //   ]);
-    // } else if (val === 'movies') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Discs',
-    //       value: 'discs',
-    //     },
-    //     {
-    //       label: 'VHS',
-    //       value: 'vhs',
-    //     },
-    //   ]);
-    // } else if (val === 'music') {
-    //   setSubCategory([
-    //     {
-    //       label: 'Cassette Taps',
-    //       value: 'cassette_taps',
-    //     },
-    //     {
-    //       label: 'Discs',
-    //       value: 'discs',
-    //     },
-    //   ]);
-    // } else if (val === 'others') {
-    //   setSubValue('123');
-    // }
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => dropDownRef.current?.close()}>
+    <TouchableOpacity
+      activeOpacity={1}
+      style={{flex: 1}}
+      onPress={() => {
+        setOpen(false);
+        setSubOpen(false);
+      }}>
       <ScreenContainer>
         <NavigationHeader navigation={navigation} />
         <View style={STYLE.background}>
@@ -418,7 +295,7 @@ function UploadScreen({navigation, categories, subCategories}) {
               Post a Collectible to the Collectors Community
             </Text>
             {imageSource && imageSource.length < 8 && (
-              <View>
+              <View style={{flex: 1}}>
                 <TouchableItem
                   onPress={openAlert}
                   style={UPLOAD_STYLE.plus_button}>
@@ -468,7 +345,7 @@ function UploadScreen({navigation, categories, subCategories}) {
               ref={dropDownRef}
               showArrowIcon={false}
               style={UPLOAD_STYLE.dropdown}
-              open={open}
+              open={subOpen ? false : open}
               value={value}
               items={items}
               setOpen={setOpen}
@@ -477,6 +354,7 @@ function UploadScreen({navigation, categories, subCategories}) {
               setItems={setItems}
               onChangeValue={val => changeSubCategoryValue(val)}
               zIndex={2000}
+              listMode="SCROLLVIEW"
               zIndexReverse={1000}
               dropDownContainerStyle={{
                 backgroundColor: COLOR.black,
@@ -510,6 +388,7 @@ function UploadScreen({navigation, categories, subCategories}) {
             ) : (
               <View>
                 <DropDownPicker
+                  ref={dropDownRef}
                   style={UPLOAD_STYLE.dropdown}
                   open={subOpen}
                   showArrowIcon={false}
@@ -519,6 +398,7 @@ function UploadScreen({navigation, categories, subCategories}) {
                   setOpen={setSubOpen}
                   setValue={setSubValue}
                   setItems={setSubCategory}
+                  listMode="SCROLLVIEW"
                   zIndex={1000}
                   zIndexReverse={2000}
                   dropDownContainerStyle={{
@@ -560,7 +440,7 @@ function UploadScreen({navigation, categories, subCategories}) {
           </ScrollView>
         </View>
       </ScreenContainer>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 }
 

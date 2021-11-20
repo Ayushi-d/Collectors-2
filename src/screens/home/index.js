@@ -40,7 +40,6 @@ function HomeScreen({navigation, user, posts}) {
         style={[STYLE.justify_center]}
         key={index}>
         <Image
-          // blurRadius={0}
           source={{uri: item}}
           resizeMethod={'scale'}
           style={HOME_STYLE.user_image}

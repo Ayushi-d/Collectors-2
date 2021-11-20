@@ -143,7 +143,7 @@ function UserProfileScreen({navigation, user}) {
           </View>
           <View style={PROFILE_STYLE.border} />
           <FlatList
-            data={user?.uploads}
+            data={user?.uploads.reverse()}
             renderItem={renderItem}
             numColumns={3}
             keyExtractor={(item, index) => `${item.id}`}
