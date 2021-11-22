@@ -270,7 +270,7 @@ export const STYLE = StyleSheet.create({
   detail_image: {
     height: DIMENSIONS.WINDOW_HEIGHT / 2,
     width: '100%',
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   background: {
     flex: 1,

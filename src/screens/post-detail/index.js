@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, ScrollView, Text, Image, FlatList} from 'react-native';
-import {ScreenContainer, TouchableItem} from '../../elements';
-import {STYLE, LoginButton} from '../../common';
-import {COLOR, DIMENSIONS, SPACING} from '../../constants';
+import {View, ScrollView, Text, Image} from 'react-native';
+import {ScreenContainer} from '../../elements';
+import {STYLE} from '../../common';
+import {DIMENSIONS, SPACING} from '../../constants';
 import {NavigationHeader} from '../../components';
+import ImageZoom from 'react-native-image-pan-zoom';
 
 function PostDetailScreen({navigation, route}) {
   console.log('route is', route.params);
@@ -32,14 +33,20 @@ function PostDetailScreen({navigation, route}) {
               </Text>
             </View>
           </View>
-          <Image
-            source={
-              route.params.imageUri
-                ? {uri: route.params.imageUri}
-                : require('../../assets/png/user.png')
-            }
-            style={STYLE.detail_image}
-          />
+          <ImageZoom
+            cropWidth={DIMENSIONS.WINDOW_WIDTH}
+            cropHeight={DIMENSIONS.WINDOW_HEIGHT / 2}
+            imageWidth={200}
+            imageHeight={200}>
+            <Image
+              source={
+                route.params.imageUri
+                  ? {uri: route.params.imageUri}
+                  : require('../../assets/png/user.png')
+              }
+              style={{width: 200, height: 200, resizeMode: 'contain'}}
+            />
+          </ImageZoom>
           <Text style={[STYLE.x_small_white, {marginTop: SPACING.v20}]}>
             {route.params.userData.description
               ? route.params.userData.description

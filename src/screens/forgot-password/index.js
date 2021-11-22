@@ -34,7 +34,7 @@ function ForgotPasswordScreen({navigation}) {
           console.log('res from forgot pass', res);
           if (res.success) {
             alert(res.message);
-            navigateTo(navigation, Routes.Otp);
+            navigateTo(navigation, Routes.Otp, {userEmail: email});
           } else {
             alert(res.message);
           }

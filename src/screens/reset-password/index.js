@@ -13,10 +13,37 @@ import {SPACING} from '../../constants';
 import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
+import {verifyOtp} from "../../actions";
 
-function ResetPasswordScreen({navigation}) {
+function ResetPasswordScreen({navigation, route}) {
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function resetNew() {
+    if (!password) {
+      alert('Password is required');
+    } else if (!confirmPass) {
+      alert('Confirm Password is required');
+    } else {
+      setLoading(true);
+      verifyOtp(
+        route.params.email,
+        route.params.otp,
+        'APP_USER',
+        password,
+      ).then((res: any) => {
+        console.log('response of verify otp with password', res);
+        setLoading(false);
+        if (res.success) {
+          alert(res.message);
+          navigateTo(navigation, Routes.Login, {}, true);
+        } else {
+          alert(res.message);
+        }
+      });
+    }
+  }
   return (
     <ImageBackground
       source={require('../../assets/jpg/whatsup_background.jpeg')}
@@ -38,15 +65,18 @@ function ResetPasswordScreen({navigation}) {
             label={'Password'}
             value={password}
             onChange={setPassword}
+            secureTextEntry={true}
           />
           <InputText
             label={'Confirm Password'}
             value={confirmPass}
             onChange={setConfirmPass}
+            secureTextEntry={true}
           />
           <LoginButton
-            onPress={() => navigateTo(navigation, Routes.Otp)}
+            onPress={resetNew}
             title={'Submit'}
+            isLoading={loading}
             style={{marginTop: SPACING.v40, alignSelf: 'center'}}
           />
         </View>

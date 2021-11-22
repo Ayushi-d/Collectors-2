@@ -53,19 +53,24 @@ function OtpScreen({navigation, route}) {
             alert(res.message);
           }
         });
-        // verifyOtp(route.params.userEmail, otp, 'APP_USER').then((res: any) => {
-        //   console.log('response of verify otp', res);
-        //   setLoading(false);
-        //   if (res.success) {
-        //     alert(res.message);
-        //     navigateTo(navigation, Routes.Home, {}, true);
-        //   } else {
-        //     alert(res.message);
-        //   }
-        // });
       }
     } else {
-      navigateTo(navigation, Routes.ResetPass);
+      setLoading(true);
+      verifyOtp(route.params.userEmail, otp, 'APP_USER').then((res: any) => {
+        console.log('response of verify otp', res);
+        setLoading(false);
+        if (res.success) {
+          alert(res.message);
+          navigateTo(
+            navigation,
+            Routes.ResetPass,
+            {email: route.params.userEmail, otp: otp},
+            true,
+          );
+        } else {
+          alert(res.message);
+        }
+      });
     }
   }
   return (
