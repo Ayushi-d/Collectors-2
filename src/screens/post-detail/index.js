@@ -33,20 +33,23 @@ function PostDetailScreen({navigation, route}) {
               </Text>
             </View>
           </View>
+          <View style = {{flex : 1}}>
           <ImageZoom
             cropWidth={DIMENSIONS.WINDOW_WIDTH}
             cropHeight={DIMENSIONS.WINDOW_HEIGHT / 2}
-            imageWidth={200}
-            imageHeight={200}>
+            imageWidth={400}
+            imageHeight={300}
+            >
             <Image
               source={
                 route.params.imageUri
                   ? {uri: route.params.imageUri}
                   : require('../../assets/png/user.png')
               }
-              style={{width: 200, height: 200, resizeMode: 'contain'}}
+              style={{width: 350, height: 300, resizeMode: 'center'}}
             />
           </ImageZoom>
+          </View>
           <Text style={[STYLE.x_small_white, {marginTop: SPACING.v20}]}>
             {route.params.userData.description
               ? route.params.userData.description
