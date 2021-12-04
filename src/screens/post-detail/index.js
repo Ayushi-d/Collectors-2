@@ -10,7 +10,7 @@ function PostDetailScreen({navigation, route}) {
   console.log('route is', route.params);
   return (
     <ScreenContainer>
-      <NavigationHeader navigation={navigation} />
+      <NavigationHeader backArrow={true} navigation={navigation} />
       <ScrollView contentContainerStyle={{paddingBottom: SPACING.v20}}>
         <View style={STYLE.padding_wrapper}>
           <Text style={[STYLE.medium_white, {marginBottom: SPACING.v20}]}>

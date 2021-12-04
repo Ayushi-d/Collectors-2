@@ -60,6 +60,7 @@ function MyTabs() {
                   height: SPACING.v40,
                   width: SPACING.v40,
                   resizeMode: 'contain',
+                  tintColor: color
                 }}
               />
               // <Icon name="home" size={30} color={color} />

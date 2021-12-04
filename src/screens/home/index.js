@@ -19,6 +19,7 @@ import {HOME_STYLE} from './style';
 import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAllPost, getUserProfile} from '../../actions';
+import { HEADER_STYLE } from '../../components/header/style';
 
 function HomeScreen({navigation, user, posts}) {
   console.log('all posts are', posts);
@@ -170,7 +171,7 @@ function HomeScreen({navigation, user, posts}) {
 
   return (
     <ScreenContainer>
-      <NavigationHeader showSearch={true} navigation={navigation} />
+      <NavigationHeader showSearch={true} navigation={navigation}   />
       <View style={STYLE.background}>
         <ScrollView
           contentContainerStyle={[

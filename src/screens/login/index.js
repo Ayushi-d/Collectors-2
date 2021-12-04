@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
-import {ACCESS_TOKEN, APP_REFRESH_TOKEN, SPACING} from '../../constants';
+import {ACCESS_TOKEN, APP_REFRESH_TOKEN, COLOR, SPACING} from '../../constants';
 import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
@@ -90,6 +90,12 @@ function LoginScreen({navigation}) {
               title={'LOG IN'}
               style={{marginTop: SPACING.v40}}
             />
+            <View style={{flexDirection: 'row', marginTop: SPACING.v10}}>
+              <Text style={STYLE.x_small_white}>Don't have an account?</Text>
+              <TouchableItem onPress={() => navigateTo(navigation, Routes.Register, {}, true)}>
+                <Text style={[STYLE.x_small_white, {color: COLOR.yellow1, paddingLeft: SPACING.v8}]}>Register</Text>
+              </TouchableItem>
+            </View>
           </View>
         </View>
       </KeyboardAvoidingView>

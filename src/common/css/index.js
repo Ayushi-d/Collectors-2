@@ -273,6 +273,7 @@ export const STYLE = StyleSheet.create({
     resizeMode: 'contain',
   },
   background: {
+   
     flex: 1,
     backgroundColor: 'rgba(41,41,41,1.2)',
   },

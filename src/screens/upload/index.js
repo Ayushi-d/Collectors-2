@@ -7,6 +7,7 @@ import {
   Image,
   View,
   Platform,
+  KeyboardAvoidingView,
   TouchableWithoutFeedback, TouchableOpacity,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -272,6 +273,7 @@ function UploadScreen({navigation, categories, subCategories}) {
       <ScreenContainer>
         <NavigationHeader navigation={navigation} />
         <View style={STYLE.background}>
+          <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : null}>
           <ScrollView
             nestedScrollEnabled={true}
             listMode="SCROLLVIEW"
@@ -386,7 +388,7 @@ function UploadScreen({navigation, categories, subCategories}) {
                 />
               </View>
             ) : (
-              <View>
+              // <View>
                 <DropDownPicker
                   ref={dropDownRef}
                   style={UPLOAD_STYLE.dropdown}
@@ -411,13 +413,13 @@ function UploadScreen({navigation, categories, subCategories}) {
                     fontFamily: FONTS.montRegular,
                   }}
                 />
-              </View>
+              // </View>
             )}
             <TextInput
               placeholder={'Description'}
               placeholderTextColor={COLOR.white}
               multiline={true}
-              value={description}
+              value={description.trim()}
               onChangeText={setDescription}
               onContentSizeChange={event => {
                 setHeight(event.nativeEvent.contentSize.height);
@@ -438,6 +440,7 @@ function UploadScreen({navigation, categories, subCategories}) {
               disable={imageUpload}
             />
           </ScrollView>
+          </KeyboardAvoidingView>
         </View>
       </ScreenContainer>
     </TouchableOpacity>
