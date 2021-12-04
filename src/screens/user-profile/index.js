@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUserProfile} from '../../actions';
 
 function UserProfileScreen({navigation, user}) {
+  console.log('user upload', user.uploads);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -143,7 +144,7 @@ function UserProfileScreen({navigation, user}) {
           </View>
           <View style={PROFILE_STYLE.border} />
           <FlatList
-            data={user?.uploads.reverse()}
+            data={user?.uploads}
             renderItem={renderItem}
             numColumns={3}
             keyExtractor={(item, index) => `${item.id}`}

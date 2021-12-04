@@ -17,6 +17,7 @@ import {Routes} from '../../navigation/routes';
 import {registerUser} from '../../actions';
 import {REGISTER_STYLE} from './style';
 import {TextInput} from 'react-native-paper';
+import {TouchableItem} from "../../elements";
 
 function RegisterScreen({navigation}) {
   let inputs = {};
@@ -122,9 +123,27 @@ function RegisterScreen({navigation}) {
                 style={{marginTop: SPACING.v40}}
                 isLoading={loading}
               />
+              <View style={{flexDirection: 'row', marginTop: SPACING.v10}}>
+                <Text style={STYLE.x_small_white}>
+                  Already have an account?
+                </Text>
+                <TouchableItem
+                  onPress={() =>
+                    navigateTo(navigation, Routes.Login, {}, true)
+                  }>
+                  <Text
+                    style={[
+                      STYLE.x_small_white,
+                      {color: COLOR.yellow1, paddingLeft: SPACING.v8},
+                    ]}>
+                    Log in
+                  </Text>
+                </TouchableItem>
+              </View>
               <View style={[REGISTER_STYLE.row_margin]}>
                 <Text style={STYLE.terms}>By Signing in you agree to the </Text>
-                <View style={{borderBottomWidth:1, borderColor: COLOR.yellow1}}>
+                <View
+                  style={{borderBottomWidth: 1, borderColor: COLOR.yellow1}}>
                   <Text style={REGISTER_STYLE.terms_text}>terms of service</Text>
                 </View>
               </View>
