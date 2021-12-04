@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, ScrollView, Text, Image, FlatList} from 'react-native';
 import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
@@ -14,6 +14,7 @@ import {getUserProfile} from '../../actions';
 function UserProfileScreen({navigation, user}) {
   console.log('user upload', user.uploads);
   const dispatch = useDispatch();
+  const [listArray, setListArray] = useState([]);
 
   useEffect(() => {
     (async function f() {
@@ -22,7 +23,16 @@ function UserProfileScreen({navigation, user}) {
     })();
   }, []);
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    user.uploads.sort(function(a,b){
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    setListArray(user.uploads);
+  }, [user]);
+
+  console.log('list array', listArray);
 
   function renderItem({item, index}) {
     return (
