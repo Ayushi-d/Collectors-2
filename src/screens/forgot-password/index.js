@@ -13,6 +13,7 @@ import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 import {forgotPass} from '../../actions';
+import {TouchableItem} from '../../elements';
 
 function ForgotPasswordScreen({navigation}) {
   let inputs = {};
@@ -28,7 +29,40 @@ function ForgotPasswordScreen({navigation}) {
       alert('Please enter valid email');
     } else {
       setLoading(true);
-      forgotPass(email, 'APP_USER')
+      forgotPass(email, 'APP_USER', false)
+        .then(res => {
+          setLoading(false);
+          console.log('res from forgot pass', res);
+          if (res.success) {
+            if (
+              res.message ===
+              'You already request for this request. Please check you mail id'
+            ) {
+              alert('Otp not received. Please click on resend otp.');
+            } else {
+              alert(res.message);
+              navigateTo(navigation, Routes.Otp, {userEmail: email});
+            }
+          } else {
+            alert(res.message);
+          }
+        })
+        .catch(err => {
+          console.log('err is', err);
+        });
+    }
+  }
+
+  async function clickOnResend() {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!email) {
+      alert('Email is required');
+    } else if (!re.test(email)) {
+      alert('Please enter valid email');
+    } else {
+      setLoading(true);
+      forgotPass(email, 'APP_USER', true)
         .then(res => {
           setLoading(false);
           console.log('res from forgot pass', res);
@@ -67,6 +101,9 @@ function ForgotPasswordScreen({navigation}) {
             account
           </Text>
           <InputText label={'Email'} value={email} onChange={setEmail} />
+          <TouchableItem onPress={clickOnResend} style={STYLE.resend}>
+            <Text style={STYLE.white_14}>Resend OTP</Text>
+          </TouchableItem>
           <LoginButton
             onPress={forgotPassword}
             title={'Send otp'.toUpperCase()}

@@ -17,6 +17,6 @@ export function loginUser(email, password, appType) {
   });
 }
 
-export const forgotPass = (email, appType) => {
-  return api.put('auth/forgot-password?', {email, appType});
+export const forgotPass = (email, appType, resendOtp) => {
+  return api.put('auth/forgot-password?', {email, appType, resendOtp});
 };
