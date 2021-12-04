@@ -178,7 +178,7 @@ function UploadScreen({navigation, categories, subCategories}) {
       alert('Category is required');
     } else if (!subValue) {
       alert('Sub category is required');
-    } else if (!description) {
+    } else if (!description || description.match(/^ *$/)) {
       alert('Description is required');
     } else if (imageSource.length === 0) {
       alert('Images is required');
@@ -418,8 +418,8 @@ function UploadScreen({navigation, categories, subCategories}) {
             <TextInput
               placeholder={'Description'}
               placeholderTextColor={COLOR.white}
-              multiline={true}
-              value={description.trim()}
+              multiline={false}
+              value={description}
               onChangeText={setDescription}
               onContentSizeChange={event => {
                 setHeight(event.nativeEvent.contentSize.height);
