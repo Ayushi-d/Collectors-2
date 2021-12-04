@@ -122,9 +122,11 @@ function RegisterScreen({navigation}) {
                 style={{marginTop: SPACING.v40}}
                 isLoading={loading}
               />
-              <View style={REGISTER_STYLE.row_margin}>
+              <View style={[REGISTER_STYLE.row_margin]}>
                 <Text style={STYLE.terms}>By Signing in you agree to the </Text>
-                <Text style={REGISTER_STYLE.terms_text}>terms of service</Text>
+                <View style={{borderBottomWidth:1, borderColor: COLOR.yellow1}}>
+                  <Text style={REGISTER_STYLE.terms_text}>terms of service</Text>
+                </View>
               </View>
             </View>
           </View>

@@ -1,15 +1,14 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {COLOR, DIMENSIONS, FONT_SIZE, HEIGHT, SPACING, WIDTH} from '../../constants';
 
 export const HEADER_STYLE = StyleSheet.create({
   container: {
-    height: SPACING.v60,
+    height: Platform.OS === 'ios' ? SPACING.v80 : SPACING.v60,
     paddingBottom: SPACING.v10,
     backgroundColor: COLOR.black,
     flexDirection: 'row',
-    paddingTop: SPACING.v20,
+    paddingTop: Platform.OS === 'ios' ? SPACING.v40 : SPACING.v20,
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: SPACING.v20,
   },
   user_image: {

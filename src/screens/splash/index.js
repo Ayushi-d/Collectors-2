@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Image, View, StatusBar, ImageBackground, Text} from 'react-native';
+import {Image, View, StatusBar, ImageBackground, Text, Platform} from 'react-native';
 import {SPLASH_STYLE} from './style';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
@@ -35,7 +35,7 @@ function SplashScreen({navigation}) {
           style={[
             STYLE.white_14,
             {
-              marginLeft: DIMENSIONS.WINDOW_WIDTH / 3,
+              marginLeft: Platform.OS === 'ios' ? DIMENSIONS.WINDOW_WIDTH / 2.5 : DIMENSIONS.WINDOW_WIDTH / 3,
               marginBottom: SPACING.v10,
             },
           ]}>
