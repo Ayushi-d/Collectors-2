@@ -5,15 +5,16 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  ImageBackground,
+  ImageBackground, TextInput,
 } from 'react-native';
-import {TouchableItem} from '../../elements';
+import {ScreenContainer, TouchableItem} from '../../elements';
 import {STYLE, LoginButton} from '../../common';
-import {SPACING} from '../../constants';
+import {COLOR, FONT_SIZE, FONTS, SPACING} from '../../constants';
 import {InputText, OtpInput} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 import {verifyOtp, verifyEmailApi} from '../../actions';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 function OtpScreen({navigation, route}) {
   let inputs = {};
@@ -74,28 +75,49 @@ function OtpScreen({navigation, route}) {
     }
   }
   return (
-    <ImageBackground
-      source={require('../../assets/jpg/whatsup_background.jpeg')}
-      style={STYLE.image_background}>
-      <View style={STYLE.commonHorizontalPad}>
-        <Image
-          source={require('../../assets/png/app-logo.png')}
-          style={[
-            STYLE.logo_app,
-            {
-              alignSelf: 'center',
-              marginTop: SPACING.v50,
-            },
-          ]}
-        />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : ''}
-          style={{paddingTop: SPACING.v25}}>
-          <Text style={[STYLE.white_16, {textAlign: 'center'}]}>
-            Please enter the OTP sent to your registered email I’d
-          </Text>
-          {/*<View style={STYLE.space_wrapper}>*/}
-            <InputText label={'OTP'} value={otp} onChange={setOtp} />
+      <ScreenContainer>
+        <View style={STYLE.commonHorizontalPad}>
+          <View style={{flexDirection: 'row', alignItems: 'center', marginTop: SPACING.v10}}>
+            <Icon name={'chevron-left'} size={30} style={{color: COLOR.white}}/>
+            <Text style={[STYLE.white_14, {fontFamily: FONTS.poppinsRegular}]}>Back</Text>
+            <Image
+                source={require('../../assets/png/app_logo_blue.png')}
+                style={[STYLE.logo_app, {marginLeft: SPACING.v100}]}
+            />
+          </View>
+          {/*<Image*/}
+          {/*  source={require('../../assets/png/app-logo.png')}*/}
+          {/*  style={[*/}
+          {/*    STYLE.logo_app,*/}
+          {/*    {*/}
+          {/*      alignSelf: 'center',*/}
+          {/*      marginTop: SPACING.v50,*/}
+          {/*    },*/}
+          {/*  ]}*/}
+          {/*/>*/}
+          <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : ''}
+              // style={{paddingTop: SPACING.v25}}
+          >
+            {/*<Text style={[STYLE.white_16, {textAlign: 'center'}]}>*/}
+            {/*  Please enter the OTP sent to your registered email I’d*/}
+            {/*</Text>*/}
+            <View style={{marginTop: SPACING.v20}}>
+              <Text style={STYLE.large_white}>OTP <Text style={{fontFamily: FONTS.poppinsMedium}}>Verification</Text></Text>
+            </View>
+            <View style={{marginTop: SPACING.v10}}>
+              <Text style={[STYLE.x_small_white]}>
+                Enter the One Time Password sent to your contact number ending with 90 to verify.
+              </Text>
+            </View>
+            <View style={{justifyContent: 'center', flexDirection: 'row', alignItems: 'center', marginTop: SPACING.v10}}>
+              <TextInput style={{width: SPACING.v50, backgroundColor: COLOR.dark_input, alignSelf: 'center', justifyContent: 'center', marginTop: SPACING.v30, height: SPACING.v60, borderWidth: 2, borderRadius: SPACING.v10}}/>
+              <TextInput style={{width: SPACING.v50, backgroundColor: COLOR.dark_input, textAlign: 'center', marginHorizontal: SPACING.v10, marginTop: SPACING.v30, height: SPACING.v60,  borderWidth: 2, borderRadius: SPACING.v10}}/>
+              <TextInput style={{width: SPACING.v50, backgroundColor: COLOR.dark_input, marginRight: SPACING.v10, marginTop: SPACING.v30, height: SPACING.v60, borderWidth: 2, borderRadius: SPACING.v10}}/>
+              <TextInput style={{width: SPACING.v50, backgroundColor: COLOR.dark_input, marginTop: SPACING.v30, height: SPACING.v60, borderWidth: 2, borderRadius: SPACING.v10}}/>
+            </View>
+            {/*<View style={STYLE.space_wrapper}>*/}
+            {/*  <InputText label={'OTP'} value={otp} onChange={setOtp} />*/}
             {/*<OtpInput*/}
             {/*  value={number1}*/}
             {/*  onChange={setNumber1}*/}
@@ -149,19 +171,54 @@ function OtpScreen({navigation, route}) {
             {/*    returnKeyType: 'done',*/}
             {/*  }}*/}
             {/*/>*/}
-          {/*</View>*/}
-          <TouchableItem style={STYLE.resend}>
-            <Text style={STYLE.white_14}>Resend OTP</Text>
-          </TouchableItem>
-          <LoginButton
-            onPress={pressNext}
-            title={'Submit'}
-            isLoading={loading}
-            style={STYLE.button_top_margin}
-          />
-        </KeyboardAvoidingView>
-      </View>
-    </ImageBackground>
+            {/*</View>*/}
+            {/*<TouchableItem style={STYLE.resend}>*/}
+            {/*  <Text style={STYLE.white_14}>Resend OTP</Text>*/}
+            {/*</TouchableItem>*/}
+            <View style={{justifyContent: 'center', flexDirection: 'row', marginTop: SPACING.v70}}>
+              <View style={{width: SPACING.v50, backgroundColor: COLOR.royal_blue, height: SPACING.v5}}/>
+              <View style={{width: SPACING.v50, marginHorizontal: SPACING.v5, backgroundColor: COLOR.royal_blue, height: SPACING.v5}}/>
+              <View style={{width: SPACING.v50, backgroundColor: COLOR.darkest_grey, height: SPACING.v5}}/>
+            </View>
+            <LoginButton
+                // onPress={pressNext}
+                onPress={pressNext}
+                title={'verify otp'.toUpperCase()}
+                isLoading={loading}
+                style={[STYLE.button_top_margin, {marginTop: SPACING.v10}]}
+            />
+            <TouchableItem
+                onPress={() => navigateTo(navigation, Routes.ForgotPassword)}
+                style={{flexDirection: 'row', marginTop: SPACING.v30, justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={[STYLE.grey_12, {fontSize: FONT_SIZE.f13}]}>
+                Haven't received the otp?
+              </Text>
+              {/*<TouchableItem*/}
+              {/*  onPress={() =>*/}
+              {/*    navigateTo(navigation, Routes.Login, {}, true)*/}
+              {/*  }>*/}
+              <Text
+                  style={[
+                    STYLE.x_small_white,
+                    {
+                      fontFamily: FONTS.poppinsMedium,
+                      paddingLeft: SPACING.v8,
+                      color: COLOR.white,
+                      textDecorationLine: 'underline',
+                    },
+                  ]}>
+                RESEND
+              </Text>
+              {/*</TouchableItem>*/}
+            </TouchableItem>
+          </KeyboardAvoidingView>
+        </View>
+      </ScreenContainer>
+    // <ImageBackground
+    //   source={require('../../assets/jpg/whatsup_background.jpeg')}
+    //   style={STYLE.image_background}>
+
+    // </ImageBackground>
   );
 }
 

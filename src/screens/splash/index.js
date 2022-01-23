@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
-import {Image, View, StatusBar, ImageBackground, Text, Platform} from 'react-native';
+import {Image, View, StatusBar, ImageBackground, Text} from 'react-native';
 import {SPLASH_STYLE} from './style';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 import {STYLE} from '../../common';
-import {ACCESS_TOKEN, COLOR, DIMENSIONS, SPACING} from '../../constants';
+import {ACCESS_TOKEN, COLOR} from '../../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SplashScreen({navigation}) {
@@ -31,24 +31,23 @@ function SplashScreen({navigation}) {
       style={STYLE.image_background}>
       <StatusBar backgroundColor={COLOR.black} barStyle={'light-content'} />
       <View style={STYLE.flex_center}>
-        <Text
-          style={[
-            STYLE.white_14,
-            {
-              marginLeft: Platform.OS === 'ios' ? DIMENSIONS.WINDOW_WIDTH / 2.5 : DIMENSIONS.WINDOW_WIDTH / 3,
-              marginBottom: SPACING.v10,
-            },
-          ]}>
-          BETA
-        </Text>
         <Image
-          source={require('../../assets/png/app-logo.png')}
+          source={require('../../assets/png/app_logo_blue.png')}
           style={SPLASH_STYLE.app_logo}
         />
-        <Image
-          source={require('../../assets/jpg/collector_2.png')}
-          style={SPLASH_STYLE.collector_text}
-        />
+        <View style={SPLASH_STYLE.bottom_section}>
+          <Image
+            source={require('../../assets/jpg/collector_2.png')}
+            style={SPLASH_STYLE.collector_text}
+          />
+          <Text
+            style={[
+              STYLE.white_14,
+              {textAlign: 'center', color: COLOR.light, opacity: 0.8},
+            ]}>
+            Version 0.2
+          </Text>
+        </View>
       </View>
     </ImageBackground>
   );

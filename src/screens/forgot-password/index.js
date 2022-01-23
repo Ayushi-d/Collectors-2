@@ -8,12 +8,13 @@ import {
   ImageBackground,
 } from 'react-native';
 import {STYLE, LoginButton} from '../../common';
-import {SPACING} from '../../constants';
+import {COLOR, FONTS, SPACING} from '../../constants';
 import {InputText} from '../../components';
 import {navigateTo} from '../../helpers';
 import {Routes} from '../../navigation/routes';
 import {forgotPass} from '../../actions';
-import {TouchableItem} from '../../elements';
+import {ScreenContainer, TouchableItem} from '../../elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function ForgotPasswordScreen({navigation}) {
   let inputs = {};
@@ -80,39 +81,49 @@ function ForgotPasswordScreen({navigation}) {
   }
 
   return (
-    <ImageBackground
-      source={require('../../assets/jpg/whatsup_background.jpeg')}
-      style={STYLE.image_background}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : ''}
-        style={STYLE.commonHorizontalPad}>
-        <View style={STYLE.justify_row}>
-          <Image
-            source={require('../../assets/png/app-logo.png')}
-            style={STYLE.logo_app}
-          />
-        </View>
-        <View style={[STYLE.justify_center, {marginTop: SPACING.v20}]}>
-          <Text style={STYLE.large_white}>Trouble Logging in?</Text>
-        </View>
-        <View style={{marginTop: SPACING.v50}}>
-          <Text style={[STYLE.x_small_white, {textAlign: 'center'}]}>
-            Enter your email and we’ll send you an OTP to get back into your
-            account
-          </Text>
-          <InputText label={'Email'} value={email} onChange={setEmail} />
-          <TouchableItem onPress={clickOnResend} style={STYLE.resend}>
-            <Text style={STYLE.white_14}>Resend OTP</Text>
-          </TouchableItem>
-          <LoginButton
-            onPress={forgotPassword}
-            title={'Send otp'.toUpperCase()}
-            style={{marginTop: SPACING.v80, alignSelf: 'center'}}
-            isLoading={loading}
-          />
-        </View>
-      </KeyboardAvoidingView>
-    </ImageBackground>
+    // <ImageBackground
+    //   source={require('../../assets/jpg/whatsup_background.jpeg')}
+    //   style={STYLE.image_background}>
+      <ScreenContainer>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : ''}
+            style={STYLE.commonHorizontalPad}>
+          <View style={{flexDirection: 'row', alignItems: 'center', marginTop: SPACING.v10}}>
+            <Icon name={'chevron-left'} size={30} style={{color: COLOR.white}}/>
+            <Text style={[STYLE.white_14, {fontFamily: FONTS.poppinsRegular}]}>Back</Text>
+            <Image
+                source={require('../../assets/png/app_logo_blue.png')}
+                style={[STYLE.logo_app, {marginLeft: SPACING.v100}]}
+            />
+          </View>
+          <View style={{marginTop: SPACING.v20}}>
+            <Text style={STYLE.large_white}>Forgot <Text style={{fontFamily: FONTS.poppinsMedium}}>Password?</Text></Text>
+          </View>
+          <View style={{marginTop: SPACING.v10}}>
+            <Text style={[STYLE.x_small_white]}>
+              Don't worry, we've got you covered! Enter your registered contact to reset your password.
+            </Text>
+            <InputText label={'Email ID or Contact Number'} value={email} onChange={setEmail} />
+            {/*<TouchableItem onPress={clickOnResend} style={STYLE.resend}>*/}
+            {/*  <Text style={STYLE.white_14}>Resend OTP</Text>*/}
+            {/*</TouchableItem>*/}
+            <View style={{justifyContent: 'center', flexDirection: 'row', marginTop: SPACING.v70}}>
+              <View style={{width: SPACING.v50, backgroundColor: COLOR.royal_blue, height: SPACING.v5}}/>
+              <View style={{width: SPACING.v50, marginHorizontal: SPACING.v5, backgroundColor: COLOR.darkest_grey, height: SPACING.v5}}/>
+              <View style={{width: SPACING.v50, backgroundColor: COLOR.darkest_grey, height: SPACING.v5}}/>
+            </View>
+            <LoginButton
+                onPress={() => navigateTo(navigation, Routes.Otp, {userEmail: 'abc@example.com'} )}
+                // onPress={forgotPassword}
+                title={'verify'.toUpperCase()}
+                style={{marginTop: SPACING.v10, alignSelf: 'center'}}
+                isLoading={loading}
+            />
+          </View>
+        </KeyboardAvoidingView>
+      </ScreenContainer>
+
+    // </ImageBackground>
   );
 }
 

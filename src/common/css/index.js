@@ -44,36 +44,29 @@ export const STYLE = StyleSheet.create({
   },
   login_button: {
     height: SPACING.v60,
-    width: '85%',
-    borderWidth: 2,
+    width: '100%',
     borderColor: COLOR.light_grey,
-    borderRadius: SPACING.v30,
-    backgroundColor: 'transparent',
+    borderRadius: SPACING.v10,
+    backgroundColor: COLOR.royal_blue,
     justifyContent: 'center',
     alignItems: 'center',
-    // height: SPACING.v60,
-    // width: '100%',
-    // borderRadius: SPACING.v30,
-    // backgroundColor: COLOR.blue,
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   button_text: {
-    fontSize: FONT_SIZE.f15,
+    fontSize: FONT_SIZE.f14,
     color: COLOR.white,
-    fontFamily: FONTS.montSemiBold,
+    fontFamily: FONTS.poppinsRegular,
     letterSpacing: 1,
   },
   x_small_white: {
     fontSize: FONT_SIZE.f13,
-    color: COLOR.white,
-    fontFamily: FONTS.montLight,
+    color: COLOR.light_grey,
+    fontFamily: FONTS.poppinsRegular,
   },
   justify_row: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: SPACING.v20
+    marginTop: SPACING.v20,
   },
   x_small_orange: {
     fontSize: FONT_SIZE.f13,
@@ -93,7 +86,7 @@ export const STYLE = StyleSheet.create({
     fontSize: FONT_SIZE.f25,
     color: COLOR.white,
     marginTop: SPACING.v10,
-    fontFamily: FONTS.montSemiBold,
+    fontFamily: FONTS.poppinsExtraBold,
   },
   large_black: {
     fontSize: FONT_SIZE.f22,
@@ -162,7 +155,7 @@ export const STYLE = StyleSheet.create({
   white_14: {
     color: COLOR.white,
     fontSize: FONT_SIZE.f14,
-    fontFamily: FONTS.montRegular,
+    fontFamily: FONTS.poppinsLightItalic,
   },
   border_light: {
     borderBottomWidth: 1,
@@ -222,9 +215,9 @@ export const STYLE = StyleSheet.create({
     paddingHorizontal: SPACING.v10,
   },
   logo_app: {
-    height: SPACING.v70,
-    width: SPACING.v70,
-    marginRight: SPACING.v20,
+    height: SPACING.v60,
+    width: SPACING.v60,
+    // marginRight: SPACING.v20,
     resizeMode: 'contain',
   },
   terms: {
@@ -245,7 +238,7 @@ export const STYLE = StyleSheet.create({
   white_16: {
     fontSize: FONT_SIZE.f16,
     color: COLOR.white,
-    fontFamily: FONTS.montRegular,
+    fontFamily: FONTS.poppinsRegular,
   },
   space_wrapper: {
     flexDirection: 'row',
@@ -273,7 +266,6 @@ export const STYLE = StyleSheet.create({
     resizeMode: 'contain',
   },
   background: {
-   
     flex: 1,
     backgroundColor: 'rgba(41,41,41,1.2)',
   },
@@ -292,5 +284,23 @@ export const STYLE = StyleSheet.create({
     marginTop: SPACING.v50,
     justifyContent: 'center',
     alignSelf: 'center',
+  },
+  grey_14: {
+    color: COLOR.light_grey,
+    fontSize: FONT_SIZE.f14,
+  },
+  grey_12: {
+    color: COLOR.light_grey,
+    fontSize: FONT_SIZE.f12,
+    fontFamily: FONTS.poppinsRegular,
+  },
+  bottom_content: {
+    position: 'absolute',
+    bottom: SPACING.v15,
+  },
+  privacy: {
+    textDecorationLine: 'underline',
+    fontFamily: FONTS.poppinsExtraBold,
+    color: COLOR.white,
   },
 });

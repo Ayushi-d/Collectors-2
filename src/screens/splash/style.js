@@ -4,7 +4,7 @@ import {DIMENSIONS, SPACING} from '../../constants';
 export const SPLASH_STYLE = StyleSheet.create({
   app_logo: {
     width: DIMENSIONS.WINDOW_WIDTH / 1.2,
-    height: SPACING.v70,
+    height: SPACING.v40,
     resizeMode: 'contain',
   },
   image_background: {
@@ -12,8 +12,12 @@ export const SPLASH_STYLE = StyleSheet.create({
     height: DIMENSIONS.WINDOW_HEIGHT,
   },
   collector_text: {
-    height: SPACING.v70,
-    width: DIMENSIONS.WINDOW_WIDTH / 1.1,
+    height: SPACING.v40,
+    width: DIMENSIONS.WINDOW_WIDTH / 1.5,
     resizeMode: 'contain',
+  },
+  bottom_section: {
+    position: 'absolute',
+    bottom: SPACING.v20,
   },
 });

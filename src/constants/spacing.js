@@ -29,6 +29,15 @@ export const FONTS = {
   montSemiBold: 'Montserrat-SemiBold',
   montThin: 'Montserrat-Thin',
   montLight: 'Montserrat-Light',
+  poppinsBold: 'Poppins-Bold',
+  poppinsExtraBold: 'Poppins-ExtraBold',
+  poppinsItalic: 'Poppins-Italic',
+  poppinsLightItalic: 'Poppins-LightItalic',
+  poppinsBoldItalic: 'Poppins-BoldItalic',
+  poppinsLight: 'Poppins-Light',
+  poppinsMedium: 'Poppins-Medium',
+  poppinsRegular: 'Poppins-Regular',
+  poppinsThin: 'Poppins-Thin',
 };
 
 export const SPACING = {
